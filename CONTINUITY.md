@@ -19,9 +19,9 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Done (recent 2-3 only)
 
-- Full website redesign on `feat/website-redesign` branch (2026-02-21)
-- Coral brand theme, Bebas Neue + Inter fonts, OKLCH dark mode (2026-02-21)
-- 6 new/rewritten sections: hero, pillars, how-it-works, architecture, features, deploy (2026-02-21)
+- Website redesign with all sections on `feat/website-redesign` (2026-02-21)
+- Fixed: app logo with invert filter, dark-mode-only, grid bg from app (2026-02-21)
+- Fixed: real API code snippets (gateway, skills catalog, sandboxes) (2026-02-21)
 
 ### Now
 
