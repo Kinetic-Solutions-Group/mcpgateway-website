@@ -25,7 +25,7 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Now
 
-Ready to create PR for website redesign (`feat/website-redesign` → `main`)
+PR #1 open: `feat/website-redesign` → `main` — awaiting Vercel preview + merge
 
 ### Next
 
