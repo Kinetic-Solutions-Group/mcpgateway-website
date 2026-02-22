@@ -19,9 +19,9 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Done (recent 2-3 only)
 
-- Website redesign with all sections on `feat/website-redesign` (2026-02-21)
-- Fixed: app logo with invert filter, dark-mode-only, grid bg from app (2026-02-21)
-- Fixed: real API code snippets (gateway, skills catalog, sandboxes) (2026-02-21)
+- App logo, dark-mode-only, grid bg, real API snippets (2026-02-21)
+- Hero terminal redesign: split request/response panel with animations (2026-02-21)
+- Full website redesign: 6 sections on `feat/website-redesign` (2026-02-21)
 
 ### Now
 
