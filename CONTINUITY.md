@@ -19,19 +19,19 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Done (recent 2-3 only)
 
-- Left-aligned JSON, context engineering value prop in terminal (2026-02-21)
-- Bebas Neue headings, bigger terminal, app logo, dark-mode-only (2026-02-21)
-- Full website redesign: 6 sections on `feat/website-redesign` (2026-02-21)
+- Website redesign merged to main, deployed to production (2026-02-21)
+- PR #1 merged: coral brand, three pillars, gateway demo terminal (2026-02-21)
+- Bebas Neue headings, app logo, dark-mode-only, real API snippets (2026-02-21)
 
 ### Now
 
-PR #1 open: `feat/website-redesign` → `main` — awaiting Vercel preview + merge
+Ready for next task
 
 ### Next
 
-- Review and merge website redesign PR
-- Add SEO metadata and structured data (OG image)
+- Add OG image for social sharing
 - Set up MDX for documentation content
+- Wire email notify form to backend (Resend/Mailchimp)
 
 ---
 
