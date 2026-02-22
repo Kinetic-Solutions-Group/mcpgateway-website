@@ -19,8 +19,8 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Done (recent 2-3 only)
 
-- App logo, dark-mode-only, grid bg, real API snippets (2026-02-21)
-- Hero terminal redesign: split request/response panel with animations (2026-02-21)
+- Bebas Neue on all section headings, bigger terminal panel (2026-02-21)
+- Split request/response terminal, app logo, dark-mode-only, real API snippets (2026-02-21)
 - Full website redesign: 6 sections on `feat/website-redesign` (2026-02-21)
 
 ### Now
