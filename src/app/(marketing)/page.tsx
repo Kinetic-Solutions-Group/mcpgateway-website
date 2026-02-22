@@ -1,15 +1,19 @@
 import { Hero } from "@/components/marketing/hero";
-import { Features } from "@/components/marketing/features";
+import { ThreePillars } from "@/components/marketing/three-pillars";
 import { HowItWorks } from "@/components/marketing/how-it-works";
-import { CTASection } from "@/components/marketing/cta-section";
+import { Architecture } from "@/components/marketing/architecture";
+import { FeatureGrid } from "@/components/marketing/feature-grid";
+import { DeploySection } from "@/components/marketing/deploy-section";
 
 export default function HomePage(): React.ReactNode {
   return (
     <>
       <Hero />
-      <Features />
+      <ThreePillars />
       <HowItWorks />
-      <CTASection />
+      <Architecture />
+      <FeatureGrid />
+      <DeploySection />
     </>
   );
 }
