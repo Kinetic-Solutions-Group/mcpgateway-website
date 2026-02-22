@@ -81,6 +81,20 @@ function GatewayDemo(): React.ReactNode {
           <div className="w-[52px]" />
         </div>
 
+        {/* Value proposition */}
+        <div className="border-b border-white/[0.06] px-6 py-3">
+          <p className="text-xs leading-relaxed text-white/40">
+            <span className="font-medium text-primary/70">
+              Semantic Search mode
+            </span>
+            {" — "}
+            With 100+ tools, the gateway auto-switches from LIST to
+            SEARCH+EXECUTE. Instead of flooding the LLM context with every tool
+            definition, agents search by intent and execute by name.{" "}
+            <span className="text-white/50">99.5% context reduction.</span>
+          </p>
+        </div>
+
         {/* Two-panel layout */}
         <div className="grid md:grid-cols-2">
           {/* REQUEST panel */}
@@ -92,52 +106,29 @@ function GatewayDemo(): React.ReactNode {
               <span className="text-xs text-white/25">POST /mcp/gateway</span>
             </div>
 
-            <div className="space-y-0 font-mono text-sm leading-[1.8] text-white/70">
-              <TerminalLine delay={0.7}>
-                <span className="text-white/30">{"{"}</span>
-              </TerminalLine>
-              <TerminalLine delay={0.8}>
-                {"  "}
-                <span className="text-primary/80">&quot;method&quot;</span>
-                <span className="text-white/30">{": "}</span>
-                <span className="text-[#7ee787]">&quot;tools/call&quot;</span>
-                <span className="text-white/30">,</span>
-              </TerminalLine>
-              <TerminalLine delay={0.9}>
-                {"  "}
-                <span className="text-primary/80">&quot;params&quot;</span>
-                <span className="text-white/30">{": {"}</span>
-              </TerminalLine>
-              <TerminalLine delay={1.0}>
-                {"    "}
-                <span className="text-primary/80">&quot;name&quot;</span>
-                <span className="text-white/30">{": "}</span>
-                <span className="text-[#7ee787]">&quot;SEARCH_TOOLS&quot;</span>
-                <span className="text-white/30">,</span>
-              </TerminalLine>
-              <TerminalLine delay={1.1}>
-                {"    "}
-                <span className="text-primary/80">&quot;arguments&quot;</span>
-                <span className="text-white/30">{": {"}</span>
-              </TerminalLine>
-              <TerminalLine delay={1.2}>
-                {"      "}
-                <span className="text-primary/80">&quot;query&quot;</span>
-                <span className="text-white/30">{": "}</span>
-                <span className="text-[#7ee787]">
-                  &quot;create GitHub PR&quot;
-                </span>
-              </TerminalLine>
-              <TerminalLine delay={1.3}>
-                <span className="text-white/30">{"    }"}</span>
-              </TerminalLine>
-              <TerminalLine delay={1.3}>
-                <span className="text-white/30">{"  }"}</span>
-              </TerminalLine>
-              <TerminalLine delay={1.3}>
-                <span className="text-white/30">{"}"}</span>
-              </TerminalLine>
-            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="text-left font-mono text-sm leading-[1.8]"
+            >
+              <pre
+                className="text-white/70"
+                dangerouslySetInnerHTML={{
+                  __html: [
+                    '<span style="color:rgba(255,255,255,0.3)">{</span>',
+                    '  <span style="color:#df7f69">"method"</span><span style="color:rgba(255,255,255,0.3)">:</span> <span style="color:#7ee787">"tools/call"</span><span style="color:rgba(255,255,255,0.3)">,</span>',
+                    '  <span style="color:#df7f69">"params"</span><span style="color:rgba(255,255,255,0.3)">: {</span>',
+                    '    <span style="color:#df7f69">"name"</span><span style="color:rgba(255,255,255,0.3)">:</span> <span style="color:#7ee787">"SEARCH_TOOLS"</span><span style="color:rgba(255,255,255,0.3)">,</span>',
+                    '    <span style="color:#df7f69">"arguments"</span><span style="color:rgba(255,255,255,0.3)">: {</span>',
+                    '      <span style="color:#df7f69">"query"</span><span style="color:rgba(255,255,255,0.3)">:</span> <span style="color:#7ee787">"create GitHub PR"</span>',
+                    '    <span style="color:rgba(255,255,255,0.3)">}</span>',
+                    '  <span style="color:rgba(255,255,255,0.3)">}</span>',
+                    '<span style="color:rgba(255,255,255,0.3)">}</span>',
+                  ].join("\n"),
+                }}
+              />
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0 }}
