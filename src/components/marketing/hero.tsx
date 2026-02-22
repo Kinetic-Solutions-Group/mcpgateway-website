@@ -27,7 +27,7 @@ function GatewayDemo(): React.ReactNode {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.5 }}
-      className="relative mx-auto w-full max-w-2xl"
+      className="relative mx-auto w-full max-w-2xl overflow-hidden"
     >
       <div className="glow overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-2xl">
         {/* Terminal header */}
@@ -106,7 +106,7 @@ export function Hero(): React.ReactNode {
     <section className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 pt-16">
       <GridBackground />
 
-      <div className="relative z-10 mx-auto max-w-4xl text-center">
+      <div className="relative z-10 mx-auto w-full max-w-4xl text-center">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
