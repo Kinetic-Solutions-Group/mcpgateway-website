@@ -5,19 +5,18 @@ const siteUrl = "https://mcpgateway.com";
 export const siteConfig = {
   name: "MCP Gateway",
   description:
-    "Enterprise platform for hosting, managing, and securing MCP servers. Auto-create servers from docs, build Agent Skills, and deploy with confidence.",
+    "Production-grade infrastructure for AI agents. Connect to any tool with MCP Servers, teach expert workflows with Agent Skills, and execute code safely in Sandboxes.",
   url: siteUrl,
   ogImage: `${siteUrl}/og.png`,
   links: {
     github: "https://github.com/Kinetic-Solutions-Group/mcpgateway",
-    docs: `${siteUrl}/docs`,
   },
 } as const;
 
 export const baseMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: siteConfig.name,
+    default: `${siteConfig.name} — Your AI Command Center`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -28,8 +27,11 @@ export const baseMetadata: Metadata = {
     "MCP Server",
     "AI Agents",
     "Agent Skills",
+    "Sandboxes",
     "Enterprise AI",
     "LLM Tools",
+    "Cloud Marketplace",
+    "Kubernetes",
   ],
   authors: [{ name: "Kinetic Solutions Group" }],
   creator: "Kinetic Solutions Group",

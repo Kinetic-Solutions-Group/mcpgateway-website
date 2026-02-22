@@ -1,5 +1,5 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Logo } from "@/components/shared/logo";
 
 const footerSections = [
   {
@@ -7,36 +7,26 @@ const footerSections = [
     links: [
       { label: "Features", href: "#features" },
       { label: "How It Works", href: "#how-it-works" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Changelog", href: "/changelog" },
+      { label: "Architecture", href: "#architecture" },
+      { label: "Deploy", href: "#deploy" },
     ],
   },
   {
     title: "Resources",
     links: [
-      { label: "Documentation", href: "/docs" },
-      { label: "API Reference", href: "/docs/api" },
-      { label: "Blog", href: "/blog" },
-      { label: "Examples", href: "/docs/examples" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "/about" },
       {
         label: "GitHub",
         href: "https://github.com/Kinetic-Solutions-Group/mcpgateway",
       },
-      { label: "Contact", href: "mailto:hello@mcpgateway.com" },
+      {
+        label: "Documentation",
+        href: "https://github.com/Kinetic-Solutions-Group/mcpgateway#readme",
+      },
     ],
   },
   {
-    title: "Legal",
-    links: [
-      { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
-    ],
+    title: "Company",
+    links: [{ label: "Contact", href: "mailto:hello@mcpgateway.com" }],
   },
 ] as const;
 
@@ -44,20 +34,25 @@ export function Footer(): React.ReactNode {
   return (
     <footer className="border-t border-border/50">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Link
               href="/"
               className="flex items-center gap-2.5 transition-opacity duration-200 hover:opacity-80"
             >
-              <Logo className="size-6" />
-              <span className="text-sm font-semibold tracking-tight">
-                MCP Gateway
-              </span>
+              <Image
+                src="/logo-light-transparent.png"
+                alt="MCP Gateway"
+                width={140}
+                height={43}
+                className="h-10 w-auto invert hue-rotate-180"
+                unoptimized
+              />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Enterprise MCP server management with AI-powered Agent Skills.
+              Production-grade infrastructure for AI agents. MCP Servers, Agent
+              Skills, and Sandboxes.
             </p>
           </div>
 

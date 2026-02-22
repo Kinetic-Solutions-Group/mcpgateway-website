@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { geistSans, geistMono } from "@/lib/fonts";
+import { inter, geistMono, bebasNeue } from "@/lib/fonts";
 import { baseMetadata } from "@/lib/metadata";
 import { Providers } from "@/components/shared/providers";
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
+        className={`${inter.variable} ${geistMono.variable} ${bebasNeue.variable} font-sans antialiased`}
       >
         <Providers>{children}</Providers>
         <Analytics />

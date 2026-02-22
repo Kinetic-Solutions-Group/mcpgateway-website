@@ -1,36 +1,47 @@
 # CONTINUITY
 
 ## Goal
-[PROJECT GOAL - One sentence describing what we're building]
+
+Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ## Key Decisions
 
-| Decision | Choice | Why |
-|----------|--------|-----|
-| | | |
+| Decision   | Choice                                     | Why                                               |
+| ---------- | ------------------------------------------ | ------------------------------------------------- |
+| Deployment | Vercel Git Integration (no GitHub Actions) | Auto-deploys on push; overkill for marketing site |
+| Branching  | Trunk-based (main = production)            | Simple, PR previews serve as staging              |
+| Versioning | No SemVer tags                             | Continuous deployment, no version numbers         |
+| PR checks  | Vercel build only                          | No custom CI needed                               |
 
 ---
 
 ## State
 
 ### Done (recent 2-3 only)
-- Initial project setup (YYYY-MM-DD)
+
+- Left-aligned JSON, context engineering value prop in terminal (2026-02-21)
+- Bebas Neue headings, bigger terminal, app logo, dark-mode-only (2026-02-21)
+- Full website redesign: 6 sections on `feat/website-redesign` (2026-02-21)
 
 ### Now
-Ready for first task
+
+PR #1 open: `feat/website-redesign` → `main` — awaiting Vercel preview + merge
 
 ### Next
-- [Priority 1]
-- [Priority 2]
-- [Priority 3]
+
+- Review and merge website redesign PR
+- Add SEO metadata and structured data (OG image)
+- Set up MDX for documentation content
 
 ---
 
 ## Open Questions
-- [Question needing resolution]
+
+- None currently
 
 ## Blockers
-- [None currently]
+
+- None currently
 
 ---
 
@@ -39,6 +50,7 @@ Ready for first task
 > **IMPORTANT:** You (Claude) are responsible for updating this file. The Stop hook will remind you, but YOU must make the edits.
 
 **On task completion:**
+
 1. Add to Done (keep only 2-3 recent items)
 2. Move top of Next → Now
 3. Add to CHANGELOG.md if significant
@@ -47,6 +59,7 @@ Ready for first task
 Clear Done section, start fresh
 
 **Where detailed progress lives:**
+
 - Feature subtasks → `docs/plans/[feature].md`
 - Historical record → `docs/CHANGELOG.md`
 - Learnings → `docs/solutions/`
@@ -56,4 +69,5 @@ Clear Done section, start fresh
 ## Session Start
 
 Claude should say:
+
 > "Loaded project state. Current focus: [Now]. Ready to continue or start something new?"
