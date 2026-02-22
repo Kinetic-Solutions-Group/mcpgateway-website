@@ -154,9 +154,11 @@
   }
 
   h2 {
-    font-size: clamp(1.875rem, 1.25rem + 2vw, 3rem);
-    line-height: 1.12;
-    letter-spacing: -0.025em;
+    @apply font-display;
+    font-size: clamp(2rem, 1.25rem + 2.5vw, 3.5rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
     text-wrap: balance;
   }
 

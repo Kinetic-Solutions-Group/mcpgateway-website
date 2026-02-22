@@ -59,7 +59,7 @@ function GatewayDemo(): React.ReactNode {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.5 }}
-      className="relative mx-auto w-full max-w-3xl overflow-hidden"
+      className="relative mx-auto w-full max-w-4xl overflow-hidden"
     >
       {/* Glow behind the terminal */}
       <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-primary/20 via-primary/5 to-transparent blur-sm" />
@@ -84,17 +84,15 @@ function GatewayDemo(): React.ReactNode {
         {/* Two-panel layout */}
         <div className="grid md:grid-cols-2">
           {/* REQUEST panel */}
-          <div className="border-b border-white/[0.06] p-5 md:border-b-0 md:border-r">
-            <div className="mb-3 flex items-center gap-2">
-              <span className="rounded bg-primary/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary">
+          <div className="border-b border-white/[0.06] p-6 md:border-b-0 md:border-r">
+            <div className="mb-4 flex items-center gap-2">
+              <span className="rounded bg-primary/15 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-primary">
                 Request
               </span>
-              <span className="text-[11px] text-white/25">
-                POST /mcp/gateway
-              </span>
+              <span className="text-xs text-white/25">POST /mcp/gateway</span>
             </div>
 
-            <div className="space-y-0 font-mono text-[12.5px] leading-[1.7] text-white/70">
+            <div className="space-y-0 font-mono text-sm leading-[1.8] text-white/70">
               <TerminalLine delay={0.7}>
                 <span className="text-white/30">{"{"}</span>
               </TerminalLine>
@@ -145,7 +143,7 @@ function GatewayDemo(): React.ReactNode {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.5 }}
-              className="mt-4 flex items-center gap-2 text-[11px] text-white/25"
+              className="mt-4 flex items-center gap-2 text-xs text-white/25"
             >
               <span className="inline-block size-1.5 rounded-full bg-primary/50" />
               Authorization: Bearer mgw_usr_...
@@ -153,13 +151,13 @@ function GatewayDemo(): React.ReactNode {
           </div>
 
           {/* RESPONSE panel */}
-          <div className="p-5">
-            <div className="mb-3 flex items-center gap-2">
+          <div className="p-6">
+            <div className="mb-4 flex items-center gap-2">
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.8 }}
-                className="rounded bg-[#28c840]/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#28c840]"
+                className="rounded bg-[#28c840]/15 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-[#28c840]"
               >
                 200 OK
               </motion.span>
@@ -167,13 +165,13 @@ function GatewayDemo(): React.ReactNode {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.9 }}
-                className="text-[11px] text-white/25"
+                className="text-xs text-white/25"
               >
                 3 tools found
               </motion.span>
             </div>
 
-            <div className="space-y-0 font-mono text-[12.5px] leading-[1.7]">
+            <div className="space-y-0 font-mono text-sm leading-[1.8]">
               {[
                 {
                   name: "github__create_pull_request",
@@ -203,8 +201,8 @@ function GatewayDemo(): React.ReactNode {
                 >
                   <ChevronRight className="mt-0.5 size-3 shrink-0 text-primary/60" />
                   <div className="min-w-0">
-                    <div className="text-white/80">{tool.name}</div>
-                    <div className="flex items-center gap-3 text-[11px] text-white/30">
+                    <div className="text-sm text-white/80">{tool.name}</div>
+                    <div className="flex items-center gap-3 text-xs text-white/30">
                       <span>
                         server:{" "}
                         <span className="text-[#79c0ff]">{tool.server}</span>
@@ -223,7 +221,7 @@ function GatewayDemo(): React.ReactNode {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 2.8 }}
-              className="mt-4 flex items-center gap-2 rounded-lg bg-white/[0.03] px-3 py-2 text-[11px]"
+              className="mt-5 flex items-center gap-2 rounded-lg bg-white/[0.03] px-3 py-2.5 text-xs"
             >
               <Zap className="size-3 text-primary" />
               <span className="text-white/40">
