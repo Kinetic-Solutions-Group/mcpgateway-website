@@ -12,55 +12,63 @@ interface Step {
 const steps: Step[] = [
   {
     number: "01",
-    title: "Register your MCP servers",
+    title: "Connect via the Gateway endpoint",
     description:
-      "Add servers from npm, PyPI, Docker Hub, remote URLs, or let AI generate one from API documentation. Six server types cover every integration pattern.",
-    code: `POST /api/v1/servers
+      "Point any MCP client at the unified gateway. One URL + API Key gives your agent access to all registered servers. Uses MCP Streamable HTTP transport — works with Claude, Cursor, VS Code, Windsurf.",
+    code: `# VS Code (.vscode/mcp.json)
 {
-  "name": "github",
-  "type": "npx",
-  "command": "@modelcontextprotocol/server-github",
-  "env_vars": { "GITHUB_TOKEN": "{{credential}}" }
-}
-
-# Response
-{ "id": "srv_abc123", "status": "running", "tools": 28 }`,
-  },
-  {
-    number: "02",
-    title: "Create Agent Skills",
-    description:
-      "Build portable instruction packages that teach agents expert workflows. Import from the catalog, describe what you need and let AI generate one, or upload a SKILL.md manually.",
-    code: `---
-name: code-review-expert
-description: Systematic PR code review
-version: 1.0.0
-allowed-tools:
-  - github__get_pull_request
-  - github__list_commits
-  - github__create_review
----
-# Code Review Workflow
-1. Fetch PR diff and commit history
-2. Check for security issues, logic errors
-3. Submit review with inline comments`,
-  },
-  {
-    number: "03",
-    title: "Connect your agents",
-    description:
-      "Point any MCP client at the gateway endpoint. One URL + API Key gives your agent access to all registered servers and skills. Semantic search finds the right tools automatically.",
-    code: `# Claude Desktop, Cursor, or any MCP client
-{
-  "mcpServers": {
-    "gateway": {
-      "url": "https://your-gateway.com/mcp/sse",
+  "servers": {
+    "mcpgateway": {
+      "type": "http",
+      "url": "https://your-domain.com/mcp/gateway",
       "headers": {
-        "Authorization": "Bearer mgw_your_api_key"
+        "Authorization": "Bearer mgw_usr_your_api_key"
       }
     }
   }
-}`,
+}
+
+# Or connect to a single server directly
+POST /mcp/servers/{server_id}`,
+  },
+  {
+    number: "02",
+    title: "Browse and install Agent Skills",
+    description:
+      "Import skills from the catalog, AI-generate from a description, or upload a SKILL.md. Skills teach agents expert workflows — when to use tools, in what order, and edge cases to handle.",
+    code: `# List available skills from the catalog
+GET /api/v1/skills/catalog/skillssh
+
+# Import a skill into your gateway
+POST /api/v1/skills/import
+{
+  "source": "skillssh",
+  "skill_name": "code-reviewer"
+}
+
+# Download as portable .skill package
+GET /api/v1/skills/{skill_id}/package
+# → Returns code-reviewer.skill (ZIP)`,
+  },
+  {
+    number: "03",
+    title: "Execute code in Sandboxes",
+    description:
+      "Spin up persistent container environments with warm pool allocation. Hardened by default — read-only rootfs, non-root user, network disabled. Install skills directly into sandboxes.",
+    code: `# Create a sandbox
+POST /api/v1/sandboxes
+{
+  "image": "mcpgateway/sandbox-python:3.12",
+  "idle_timeout_seconds": 1800
+}
+
+# Execute code safely
+POST /api/v1/sandboxes/{sandbox_id}/exec
+{ "command": "python main.py" }
+
+# Response
+{ "exit_code": 0, "stdout": "...",
+  "duration_ms": 123 }`,
   },
 ];
 

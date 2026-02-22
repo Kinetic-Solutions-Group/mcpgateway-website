@@ -9,8 +9,15 @@ import { Button } from "@/components/ui/button";
 function GridBackground(): React.ReactNode {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Grid pattern */}
-      <div className="bg-grid dark:bg-grid absolute inset-0 bg-grid-light opacity-40 dark:opacity-100" />
+      {/* Grid pattern — matches the MCP Gateway app login page */}
+      <div
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px),
+                           linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
+          backgroundSize: "60px 60px",
+        }}
+      />
 
       {/* Radial fade */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,var(--background)_70%)]" />
@@ -50,7 +57,7 @@ function GatewayDemo(): React.ReactNode {
             <span className="text-primary">$</span>
             <span className="text-foreground">{" curl -X POST "}</span>
             <span className="text-chart-3">
-              https://gateway.mcpgateway.com/mcp
+              https://your-domain.com/mcp/gateway
             </span>
             {" \\\n"}
             <span className="text-foreground">{"    -H "}</span>

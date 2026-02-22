@@ -1,11 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Github, Menu, X } from "lucide-react";
 
-import { Logo } from "@/components/shared/logo";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -28,10 +27,15 @@ export function Navbar(): React.ReactNode {
             href="/"
             className="flex items-center gap-2.5 transition-opacity duration-200 hover:opacity-80"
           >
-            <Logo className="size-7 text-primary" />
-            <span className="font-display text-lg uppercase tracking-wide">
-              MCP Gateway
-            </span>
+            <Image
+              src="/logo-light-transparent.png"
+              alt="MCP Gateway"
+              width={200}
+              height={62}
+              className="h-14 w-auto invert hue-rotate-180"
+              priority
+              unoptimized
+            />
           </Link>
 
           {/* Desktop nav */}
@@ -49,7 +53,6 @@ export function Navbar(): React.ReactNode {
 
           {/* Desktop actions */}
           <div className="hidden items-center gap-3 md:flex">
-            <ThemeToggle />
             <Button variant="ghost" size="sm" asChild>
               <Link
                 href="https://github.com/Kinetic-Solutions-Group/mcpgateway"
@@ -71,7 +74,6 @@ export function Navbar(): React.ReactNode {
 
           {/* Mobile menu button */}
           <div className="flex items-center gap-2 md:hidden">
-            <ThemeToggle />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors duration-200 hover:text-foreground"

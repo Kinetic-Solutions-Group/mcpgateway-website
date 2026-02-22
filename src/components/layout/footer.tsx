@@ -1,5 +1,5 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Logo } from "@/components/shared/logo";
 
 const footerSections = [
   {
@@ -41,10 +41,14 @@ export function Footer(): React.ReactNode {
               href="/"
               className="flex items-center gap-2.5 transition-opacity duration-200 hover:opacity-80"
             >
-              <Logo className="size-6 text-primary" />
-              <span className="font-display text-base uppercase tracking-wide">
-                MCP Gateway
-              </span>
+              <Image
+                src="/logo-light-transparent.png"
+                alt="MCP Gateway"
+                width={140}
+                height={43}
+                className="h-10 w-auto invert hue-rotate-180"
+                unoptimized
+              />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Production-grade infrastructure for AI agents. MCP Servers, Agent
