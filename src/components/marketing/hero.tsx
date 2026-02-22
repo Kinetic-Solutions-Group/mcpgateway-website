@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Github } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -15,13 +15,13 @@ function GridBackground(): React.ReactNode {
       {/* Radial fade */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,var(--background)_70%)]" />
 
-      {/* Accent glow */}
-      <div className="absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/5 blur-[120px]" />
+      {/* Coral accent glow */}
+      <div className="absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[120px]" />
     </div>
   );
 }
 
-function CodeSnippet(): React.ReactNode {
+function GatewayDemo(): React.ReactNode {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -29,43 +29,71 @@ function CodeSnippet(): React.ReactNode {
       transition={{ duration: 0.6, delay: 0.5 }}
       className="relative mx-auto w-full max-w-2xl"
     >
-      <div className="overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-2xl">
+      <div className="glow overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-2xl">
         {/* Terminal header */}
         <div className="flex items-center gap-2 border-b border-border/50 px-4 py-3">
           <div className="size-3 rounded-full bg-red-500/20" />
           <div className="size-3 rounded-full bg-yellow-500/20" />
           <div className="size-3 rounded-full bg-green-500/20" />
           <span className="ml-2 font-mono text-xs text-muted-foreground">
-            terminal
+            gateway
           </span>
         </div>
 
         {/* Code content */}
-        <pre className="overflow-x-auto p-5 font-mono text-sm leading-relaxed">
+        <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed">
           <code>
-            <span className="text-muted-foreground">{"# "}</span>
             <span className="text-muted-foreground">
-              Create an MCP server from any API docs
+              {"# Connect your AI agent to 100+ tools via one endpoint"}
             </span>
             {"\n"}
-            <span className="text-green-400">$</span>
-            <span className="text-foreground">
-              {" "}
-              mcpgateway create --from-docs
-            </span>{" "}
-            <span className="text-blue-400">https://api.stripe.com/docs</span>
+            <span className="text-primary">$</span>
+            <span className="text-foreground">{" curl -X POST "}</span>
+            <span className="text-chart-3">
+              https://gateway.mcpgateway.com/mcp
+            </span>
+            {" \\\n"}
+            <span className="text-foreground">{"    -H "}</span>
+            <span className="text-chart-4">
+              {'"Authorization: Bearer mgw_..."'}
+            </span>
+            {" \\\n"}
+            <span className="text-foreground">{"    -d "}</span>
+            <span className="text-chart-4">{"'"}</span>
+            <span className="text-chart-2">{'{"method": "tools/call",'}</span>
+            {"\n"}
+            <span className="text-chart-2">
+              {'         "params": {"name": "SEARCH_TOOLS",'}
+            </span>
+            {"\n"}
+            <span className="text-chart-2">
+              {'          "arguments": {"query": "create GitHub PR"}}}'}
+            </span>
+            <span className="text-chart-4">{"'"}</span>
             {"\n\n"}
-            <span className="text-muted-foreground">
-              {"  "}Analyzing API documentation...
+            <span className="text-muted-foreground">{"{"}</span>
+            {"\n"}
+            <span className="text-muted-foreground">{'  "tools": ['}</span>
+            {"\n"}
+            <span className="text-chart-4">
+              {
+                '    {"name": "github__create_pull_request", "server": "github"}'
+              }
+            </span>
+            {",\n"}
+            <span className="text-chart-4">
+              {'    {"name": "github__list_commits", "server": "github"}'}
+            </span>
+            {",\n"}
+            <span className="text-chart-4">
+              {
+                '    {"name": "gitlab__create_merge_request", "server": "gitlab"}'
+              }
             </span>
             {"\n"}
-            <span className="text-muted-foreground">
-              {"  "}Generating MCP server with 47 tools...
-            </span>
+            <span className="text-muted-foreground">{"  ]"}</span>
             {"\n"}
-            <span className="text-green-400">{"  "}Done!</span>
-            <span className="text-foreground"> Server deployed at</span>{" "}
-            <span className="text-blue-400">gateway.mcpgateway.com/stripe</span>
+            <span className="text-muted-foreground">{"}"}</span>
           </code>
         </pre>
       </div>
@@ -85,28 +113,22 @@ export function Hero(): React.ReactNode {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Link
-            href="/blog/launch"
-            className="group mb-8 inline-flex items-center gap-2 rounded-full border border-border/50 bg-card/50 px-4 py-1.5 text-sm text-muted-foreground transition-colors duration-200 hover:border-border hover:text-foreground"
-          >
-            <span className="inline-flex size-1.5 rounded-full bg-green-500" />
-            Now in Beta
-            <ArrowRight className="size-3 transition-transform duration-200 group-hover:translate-x-0.5" />
-          </Link>
+          <span className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/50 bg-card/50 px-4 py-1.5 text-sm text-muted-foreground">
+            <span className="inline-flex size-1.5 rounded-full bg-primary" />
+            Open Source MCP Gateway
+          </span>
         </motion.div>
 
-        {/* Headline */}
+        {/* Headline — Bebas Neue display font */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-4 font-semibold tracking-tight"
+          className="mt-4 font-display uppercase"
         >
-          The enterprise platform
+          Your AI
           <br />
-          <span className="bg-gradient-to-r from-foreground via-foreground/80 to-foreground/60 bg-clip-text text-transparent">
-            for MCP servers
-          </span>
+          <span className="text-primary glow-text">Command Center</span>
         </motion.h1>
 
         {/* Subheadline */}
@@ -116,9 +138,8 @@ export function Hero(): React.ReactNode {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl"
         >
-          Host, manage, and secure MCP servers at scale. Auto-create servers
-          from any API documentation. Build Agent Skills that make your AI
-          smarter.
+          The production-grade platform where AI agents connect to any tool,
+          learn expert workflows, and execute code safely.
         </motion.p>
 
         {/* CTAs */}
@@ -128,20 +149,36 @@ export function Hero(): React.ReactNode {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
-          <Button size="lg" className="min-w-[180px] gap-2" asChild>
-            <Link href="/docs/getting-started">
-              Get Started
+          <Button
+            size="lg"
+            className="min-w-[180px] gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
+            asChild
+          >
+            <Link href="#deploy">
+              Deploy Now
               <ArrowRight className="size-4" />
             </Link>
           </Button>
-          <Button variant="outline" size="lg" className="min-w-[180px]" asChild>
-            <Link href="#how-it-works">See How It Works</Link>
+          <Button
+            variant="outline"
+            size="lg"
+            className="min-w-[180px] gap-2"
+            asChild
+          >
+            <Link
+              href="https://github.com/Kinetic-Solutions-Group/mcpgateway"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Github className="size-4" />
+              View on GitHub
+            </Link>
           </Button>
         </motion.div>
 
-        {/* Code snippet */}
+        {/* Gateway demo terminal */}
         <div className="mt-16">
-          <CodeSnippet />
+          <GatewayDemo />
         </div>
       </div>
     </section>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Github, Menu, X } from "lucide-react";
 
 import { Logo } from "@/components/shared/logo";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 const navLinks = [
   { href: "#features", label: "Features" },
   { href: "#how-it-works", label: "How It Works" },
-  { href: "/docs", label: "Docs" },
-  { href: "/pricing", label: "Pricing" },
+  { href: "#architecture", label: "Architecture" },
+  { href: "#deploy", label: "Deploy" },
 ] as const;
 
 export function Navbar(): React.ReactNode {
@@ -28,8 +28,8 @@ export function Navbar(): React.ReactNode {
             href="/"
             className="flex items-center gap-2.5 transition-opacity duration-200 hover:opacity-80"
           >
-            <Logo className="size-7" />
-            <span className="text-base font-semibold tracking-tight">
+            <Logo className="size-7 text-primary" />
+            <span className="font-display text-lg uppercase tracking-wide">
               MCP Gateway
             </span>
           </Link>
@@ -51,12 +51,21 @@ export function Navbar(): React.ReactNode {
           <div className="hidden items-center gap-3 md:flex">
             <ThemeToggle />
             <Button variant="ghost" size="sm" asChild>
-              <Link href="https://github.com/Kinetic-Solutions-Group/mcpgateway">
+              <Link
+                href="https://github.com/Kinetic-Solutions-Group/mcpgateway"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Github className="mr-1.5 size-4" />
                 GitHub
               </Link>
             </Button>
-            <Button size="sm" asChild>
-              <Link href="/docs/getting-started">Get Started</Link>
+            <Button
+              size="sm"
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              asChild
+            >
+              <Link href="#deploy">Deploy</Link>
             </Button>
           </div>
 
@@ -96,9 +105,25 @@ export function Navbar(): React.ReactNode {
               {link.label}
             </Link>
           ))}
-          <div className="pt-4">
-            <Button className="w-full" size="sm" asChild>
-              <Link href="/docs/getting-started">Get Started</Link>
+          <div className="flex items-center gap-3 pt-4">
+            <Button variant="ghost" size="sm" className="flex-1" asChild>
+              <Link
+                href="https://github.com/Kinetic-Solutions-Group/mcpgateway"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Github className="mr-1.5 size-4" />
+                GitHub
+              </Link>
+            </Button>
+            <Button
+              className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
+              size="sm"
+              asChild
+            >
+              <Link href="#deploy" onClick={() => setMobileOpen(false)}>
+                Deploy
+              </Link>
             </Button>
           </div>
         </div>
