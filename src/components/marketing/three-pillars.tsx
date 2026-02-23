@@ -7,43 +7,47 @@ import type { LucideIcon } from "lucide-react";
 interface Pillar {
   icon: LucideIcon;
   title: string;
-  subtitle: string;
-  bullets: string[];
+  description: string;
+  code: string;
 }
 
 const pillars: Pillar[] = [
   {
     icon: Server,
     title: "MCP Servers",
-    subtitle: "Connect agents to any tool",
-    bullets: [
-      "6 server types: Remote, NPX, UVX, Container, Generated, Bundle",
-      "Gateway mode with semantic search across 100+ tools",
-      "HTTP/2 connection pooling for faster concurrent requests",
-      "One URL + API Key gives agents access to everything",
-    ],
+    description:
+      "Register, route, monitor, and secure every MCP server connection. One gateway URL replaces dozens of direct connections.",
+    code: `servers:
+  - name: github
+    transport: streamable-http
+    auth: oauth2
+  - name: slack
+    transport: streamable-http
+    auth: api-key`,
   },
   {
     icon: BookOpen,
     title: "Agent Skills",
-    subtitle: "Teach agents expert workflows",
-    bullets: [
-      "Portable instruction packages following the agentskills.io spec",
-      "Import from catalog, AI-generate from text, or upload manually",
-      "Progressive loading: 50 tokens to 5K to full assets on demand",
-      "Skills teach when to use tools, in what order, and edge cases",
-    ],
+    description:
+      "Import, version, and distribute portable skill packages across your organization. Progressive loading keeps context windows lean.",
+    code: `skills:
+  - name: code-review
+    version: 2.1.0
+    access: engineering
+  - name: compliance-check
+    version: 1.0.0
+    access: all-teams`,
   },
   {
     icon: Box,
     title: "Sandboxes",
-    subtitle: "Safe code execution",
-    bullets: [
-      "Persistent container environments with dedicated volumes",
-      "Warm pool architecture for sub-second allocation, no cold starts",
-      "Hardened: read-only rootfs, non-root, network disabled by default",
-      "Session affinity ensures the same agent reuses the same sandbox",
-    ],
+    description:
+      "Isolated execution environments with resource limits, warm pools, and full audit trails. Agents execute code safely.",
+    code: `sandbox:
+  runtime: python:3.12
+  memory: 512Mi
+  timeout: 30s
+  network: restricted`,
   },
 ];
 
@@ -70,18 +74,12 @@ function PillarCard({
       <h3 className="font-display text-2xl uppercase tracking-wide">
         {pillar.title}
       </h3>
-      <p className="mt-1 text-base text-muted-foreground">{pillar.subtitle}</p>
-      <ul className="mt-5 space-y-3">
-        {pillar.bullets.map((bullet) => (
-          <li
-            key={bullet}
-            className="flex gap-3 text-sm leading-relaxed text-muted-foreground"
-          >
-            <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary/60" />
-            {bullet}
-          </li>
-        ))}
-      </ul>
+      <p className="mt-2 text-sm text-muted-foreground">{pillar.description}</p>
+      <div className="mt-4 overflow-hidden rounded-lg bg-[#0d1117] p-4">
+        <pre className="font-mono text-xs leading-relaxed text-white/70">
+          <code>{pillar.code}</code>
+        </pre>
+      </div>
     </motion.div>
   );
 }
@@ -98,7 +96,7 @@ export function ThreePillars(): React.ReactNode {
             viewport={{ once: true }}
             className="text-sm font-medium uppercase tracking-wider text-primary"
           >
-            Core Capabilities
+            The Solution
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
@@ -107,9 +105,9 @@ export function ThreePillars(): React.ReactNode {
             transition={{ delay: 0.1 }}
             className="mt-4"
           >
-            Three pillars of
+            One platform.
             <br />
-            AI agent infrastructure
+            Three capabilities.
           </motion.h2>
         </div>
 
