@@ -20,15 +20,15 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 ### Done (recent 2-3 only)
 
 - Website redesign merged to main, deployed to production (2026-02-21)
-- PR #1 merged: coral brand, three pillars, gateway demo terminal (2026-02-21)
-- Bebas Neue headings, app logo, dark-mode-only, real API snippets (2026-02-21)
+- Deep market research: MCP ecosystem, Shadow AI stats, competitor positioning, messaging best practices (2026-02-23)
 
 ### Now
 
-Ready for next task
+Website content/messaging redesign — translating research into new homepage copy and structure
 
 ### Next
 
+- Implement new homepage messaging (headline, problem statement, three pillars, dual CTA)
 - Add OG image for social sharing
 - Set up MDX for documentation content
 - Wire email notify form to backend (Resend/Mailchimp)
@@ -37,7 +37,9 @@ Ready for next task
 
 ## Open Questions
 
-- None currently
+- Which headline angle to go with (category claim vs problem-forward vs capability-forward)
+- Tone: technical/direct vs problem-forward vs capability-forward
+- Whether to create a separate /enterprise page or keep dual-audience on homepage
 
 ## Blockers
 
