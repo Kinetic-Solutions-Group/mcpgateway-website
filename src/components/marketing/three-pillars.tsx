@@ -1,14 +1,98 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Server, BookOpen, Box } from "lucide-react";
+import { Server, BookOpen, Box, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+
+/* ------------------------------------------------------------------ */
+/*  Syntax-highlighted JSON for mini-terminals                         */
+/* ------------------------------------------------------------------ */
+
+function JsonLine({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}): React.ReactNode {
+  return <div className={`whitespace-pre ${className}`}>{children}</div>;
+}
+
+function K({ children }: { children: React.ReactNode }): React.ReactNode {
+  return <span className="text-primary">{children}</span>;
+}
+
+function S({ children }: { children: React.ReactNode }): React.ReactNode {
+  return <span className="text-[#7ee787]">{children}</span>;
+}
+
+function N({ children }: { children: React.ReactNode }): React.ReactNode {
+  return <span className="text-[#79c0ff]">{children}</span>;
+}
+
+function D({ children }: { children: React.ReactNode }): React.ReactNode {
+  return <span className="text-white/30">{children}</span>;
+}
+
+function M({ children }: { children: React.ReactNode }): React.ReactNode {
+  return <span className="text-white/50">{children}</span>;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Mini-terminal component                                            */
+/* ------------------------------------------------------------------ */
+
+function MiniTerminal({
+  method,
+  path,
+  children,
+  footer,
+}: {
+  method: string;
+  path: string;
+  children: React.ReactNode;
+  footer?: string;
+}): React.ReactNode {
+  return (
+    <div className="mt-5 overflow-hidden rounded-xl border border-white/[0.06] bg-[#0d1117]">
+      {/* Chrome bar */}
+      <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-2.5">
+        <div className="flex items-center gap-1.5">
+          <div className="size-2 rounded-full bg-[#ff5f57]" />
+          <div className="size-2 rounded-full bg-[#febc2e]" />
+          <div className="size-2 rounded-full bg-[#28c840]" />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="rounded bg-[#28c840]/15 px-1.5 py-0.5 text-[10px] font-bold uppercase text-[#28c840]">
+            {method}
+          </span>
+          <span className="text-[11px] text-white/40">{path}</span>
+        </div>
+        <div className="w-[40px]" />
+      </div>
+
+      {/* Body */}
+      <div className="p-4 font-mono text-[11px] leading-[1.7]">{children}</div>
+
+      {/* Footer stat line */}
+      {footer ? (
+        <div className="flex items-center gap-2 border-t border-white/[0.06] px-4 py-2">
+          <Zap className="size-3 text-primary/60" />
+          <span className="text-[10px] text-white/30">{footer}</span>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Pillar data                                                        */
+/* ------------------------------------------------------------------ */
 
 interface Pillar {
   icon: LucideIcon;
   title: string;
   description: string;
-  code: string;
 }
 
 const pillars: Pillar[] = [
@@ -16,40 +100,247 @@ const pillars: Pillar[] = [
     icon: Server,
     title: "MCP Servers",
     description:
-      "Register, route, monitor, and secure every MCP server connection. One gateway URL replaces dozens of direct connections.",
-    code: `servers:
-  - name: github
-    transport: streamable-http
-    auth: oauth2
-  - name: slack
-    transport: streamable-http
-    auth: api-key`,
+      "Search across all connected servers by intent. One gateway URL replaces dozens of direct connections.",
   },
   {
     icon: BookOpen,
     title: "Agent Skills",
     description:
-      "Import, version, and distribute portable skill packages across your organization. Progressive loading keeps context windows lean.",
-    code: `skills:
-  - name: code-review
-    version: 2.1.0
-    access: engineering
-  - name: compliance-check
-    version: 1.0.0
-    access: all-teams`,
+      "Generate expert workflow packages from natural language. AI builds the skill, you approve it.",
   },
   {
     icon: Box,
     title: "Sandboxes",
     description:
-      "Isolated execution environments with resource limits, warm pools, and full audit trails. Agents execute code safely.",
-    code: `sandbox:
-  runtime: python:3.12
-  memory: 512Mi
-  timeout: 30s
-  network: restricted`,
+      "Execute code in isolated containers with resource limits. Track every file change and output.",
   },
 ];
+
+/* ------------------------------------------------------------------ */
+/*  MCP Servers terminal — Semantic Tool Search                        */
+/* ------------------------------------------------------------------ */
+
+function ServersTerminal(): React.ReactNode {
+  return (
+    <MiniTerminal
+      method="POST"
+      path="/api/v1/tools/search"
+      footer="Searched 247 tools across 12 servers in 23ms"
+    >
+      {/* Request */}
+      <JsonLine>
+        <D>{"{"}</D>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <K>&quot;query&quot;</K>
+        <D>:</D> <S>&quot;create a pull request&quot;</S>
+      </JsonLine>
+      <JsonLine>
+        <D>{"}"}</D>
+      </JsonLine>
+
+      {/* Divider */}
+      <div className="my-3 flex items-center gap-2">
+        <div className="h-px flex-1 bg-white/[0.06]" />
+        <span className="rounded bg-[#28c840]/15 px-2 py-0.5 text-[10px] font-bold text-[#28c840]">
+          200 OK
+        </span>
+        <span className="text-[10px] text-white/25">23ms</span>
+        <div className="h-px flex-1 bg-white/[0.06]" />
+      </div>
+
+      {/* Response */}
+      <JsonLine>
+        <D>[</D>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <D>{"{"}</D> <K>&quot;name&quot;</K>
+        <D>:</D> <S>&quot;github_create_pull_request&quot;</S>
+        <D>,</D>
+      </JsonLine>
+      <JsonLine>
+        {"    "}
+        <K>&quot;server&quot;</K>
+        <D>:</D> <S>&quot;github&quot;</S>
+        <D>,</D> <K>&quot;score&quot;</K>
+        <D>:</D> <N>0.97</N> <D>{"}"}</D>
+        <D>,</D>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <D>{"{"}</D> <K>&quot;name&quot;</K>
+        <D>:</D> <S>&quot;gitlab_create_merge_request&quot;</S>
+        <D>,</D>
+      </JsonLine>
+      <JsonLine>
+        {"    "}
+        <K>&quot;server&quot;</K>
+        <D>:</D> <S>&quot;gitlab&quot;</S>
+        <D>,</D> <K>&quot;score&quot;</K>
+        <D>:</D> <N>0.84</N> <D>{"}"}</D>
+      </JsonLine>
+      <JsonLine>
+        <D>]</D>
+      </JsonLine>
+    </MiniTerminal>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Skills terminal — AI Generation                                    */
+/* ------------------------------------------------------------------ */
+
+function SkillsTerminal(): React.ReactNode {
+  return (
+    <MiniTerminal
+      method="POST"
+      path="/api/v1/skills/generate"
+      footer="AI-generated from natural language intent"
+    >
+      {/* Request */}
+      <JsonLine>
+        <D>{"{"}</D>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <K>&quot;intent&quot;</K>
+        <D>:</D> <S>&quot;Review PRs for security vulnerabilities&quot;</S>
+      </JsonLine>
+      <JsonLine>
+        <D>{"}"}</D>
+      </JsonLine>
+
+      {/* Divider */}
+      <div className="my-3 flex items-center gap-2">
+        <div className="h-px flex-1 bg-white/[0.06]" />
+        <span className="rounded bg-[#79c0ff]/15 px-2 py-0.5 text-[10px] font-bold text-[#79c0ff]">
+          SSE Stream
+        </span>
+        <div className="h-px flex-1 bg-white/[0.06]" />
+      </div>
+
+      {/* Stream events */}
+      <JsonLine>
+        <M>▸</M> <span className="text-white/50">Analyzing intent...</span>
+      </JsonLine>
+      <JsonLine>
+        <M>▸</M>{" "}
+        <span className="text-white/50">Mapping to GitHub server tools...</span>
+      </JsonLine>
+      <JsonLine>
+        <M>▸</M> <span className="text-white/50">Generating SKILL.md...</span>
+      </JsonLine>
+      <div className="mt-1" />
+      <JsonLine>
+        <span className="text-[#28c840]">✓</span>{" "}
+        <span className="text-white/70">
+          Created <S>&quot;security-pr-reviewer&quot;</S> v1.0.0
+        </span>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <span className="text-white/40">
+          3 tools referenced · 2 workflow steps
+        </span>
+      </JsonLine>
+    </MiniTerminal>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Sandboxes terminal — Execute + Results                             */
+/* ------------------------------------------------------------------ */
+
+function SandboxesTerminal(): React.ReactNode {
+  return (
+    <MiniTerminal
+      method="POST"
+      path="/api/v1/sandboxes/{id}/exec"
+      footer="Isolated · No network · Read-only rootfs"
+    >
+      {/* Request */}
+      <JsonLine>
+        <D>{"{"}</D>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <K>&quot;command&quot;</K>
+        <D>:</D> <S>&quot;python analyze.py --input data.csv&quot;</S>
+      </JsonLine>
+      <JsonLine>
+        <D>{"}"}</D>
+      </JsonLine>
+
+      {/* Divider */}
+      <div className="my-3 flex items-center gap-2">
+        <div className="h-px flex-1 bg-white/[0.06]" />
+        <span className="rounded bg-[#28c840]/15 px-2 py-0.5 text-[10px] font-bold text-[#28c840]">
+          200 OK
+        </span>
+        <span className="text-[10px] text-white/25">2.3s</span>
+        <div className="h-px flex-1 bg-white/[0.06]" />
+      </div>
+
+      {/* Response */}
+      <JsonLine>
+        <D>{"{"}</D>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <K>&quot;exit_code&quot;</K>
+        <D>:</D> <N>0</N>
+        <D>,</D>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <K>&quot;stdout&quot;</K>
+        <D>:</D> <S>&quot;Analysis complete. 1,234 rows.&quot;</S>
+        <D>,</D>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <K>&quot;duration_ms&quot;</K>
+        <D>:</D> <N>2341</N>
+        <D>,</D>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <K>&quot;files_changed&quot;</K>
+        <D>: [</D>
+      </JsonLine>
+      <JsonLine>
+        {"    "}
+        <D>{"{"}</D> <K>&quot;path&quot;</K>
+        <D>:</D> <S>&quot;outputs/chart.png&quot;</S>
+        <D>,</D>
+      </JsonLine>
+      <JsonLine>
+        {"      "}
+        <K>&quot;action&quot;</K>
+        <D>:</D> <S>&quot;created&quot;</S> <D>{"}"}</D>
+      </JsonLine>
+      <JsonLine>
+        {"  "}
+        <D>]</D>
+      </JsonLine>
+      <JsonLine>
+        <D>{"}"}</D>
+      </JsonLine>
+    </MiniTerminal>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Pillar Card                                                        */
+/* ------------------------------------------------------------------ */
+
+const terminalComponents: Record<string, () => React.ReactNode> = {
+  "MCP Servers": ServersTerminal,
+  "Agent Skills": SkillsTerminal,
+  Sandboxes: SandboxesTerminal,
+};
 
 function PillarCard({
   pillar,
@@ -59,6 +350,7 @@ function PillarCard({
   index: number;
 }): React.ReactNode {
   const Icon = pillar.icon;
+  const Terminal = terminalComponents[pillar.title];
 
   return (
     <motion.div
@@ -75,14 +367,14 @@ function PillarCard({
         {pillar.title}
       </h3>
       <p className="mt-2 text-sm text-muted-foreground">{pillar.description}</p>
-      <div className="mt-4 overflow-hidden rounded-lg bg-[#0d1117] p-4">
-        <pre className="font-mono text-xs leading-relaxed text-white/70">
-          <code>{pillar.code}</code>
-        </pre>
-      </div>
+      {Terminal ? <Terminal /> : null}
     </motion.div>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/*  Three Pillars Section                                              */
+/* ------------------------------------------------------------------ */
 
 export function ThreePillars(): React.ReactNode {
   return (

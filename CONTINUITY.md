@@ -19,22 +19,17 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Done (recent 2-3 only)
 
-- Homepage messaging redesign implemented on feat/homepage-messaging-redesign branch (2026-02-23)
-  - New hero: "The platform for production AI agents" + architecture diagram
-  - Shadow AI problem section with industry stats (91%, 53%, $670K)
-  - Updated three pillars with code snippets, Deploy Your Way section, blog section, CTA
-  - Two blog posts: "Why AI Agents Need a Control Plane" + "Open Source in the Age of AI Coding"
-  - Blog infrastructure (index + dynamic routing + @tailwindcss/typography)
-- Deep market research: MCP ecosystem, Shadow AI stats, competitor positioning, open source strategy (2026-02-23)
-- Strategic decisions: FSL licensing, marketplace monetization (Kong model), source-available positioning
+- Homepage messaging redesign merged to production (2026-02-23)
+- Three pillars upgraded: mini-terminals with real API examples (semantic search, AI skill generation, sandbox exec) (2026-02-23)
+- Domain mcpgateway.com connected to Vercel, live in production (2026-02-23)
 
 ### Now
 
-PR branch `feat/homepage-messaging-redesign` ready for review and merge to main
+Three pillars API terminal upgrade — reviewing locally, ready to commit and push
 
 ### Next
 
-- Create PR for homepage messaging redesign → merge to production
+- Commit + push three pillars upgrade to production
 - Add OG image for social sharing
 - Wire email notify form to backend (Resend/Mailchimp)
 - Set up MDX for documentation content (replace blog post React components)

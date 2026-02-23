@@ -42,6 +42,16 @@ mcpgateway-website/
 └── package.json          # pnpm
 ```
 
+### Port Allocation
+
+| Service                           | Port     |
+| --------------------------------- | -------- |
+| MCP Gateway Frontend/GUI          | 3000     |
+| **This website (mcpgateway.com)** | **3001** |
+| MCP Gateway Backend API           | 8000     |
+
+Always run the website dev server on port 3001: `pnpm dev -p 3001`
+
 ### Design Direction
 
 - Premium, dark-mode-first aesthetic (think Linear.app, Vercel.com)
@@ -87,7 +97,7 @@ merge to main → Vercel auto-deploys to production
 
 ```bash
 # Development
-pnpm dev                               # Start Next.js dev server (http://localhost:3000)
+pnpm dev -p 3001                       # Start Next.js dev server (http://localhost:3001)
 pnpm build                             # Production build (Turbopack)
 pnpm lint                              # ESLint check
 pnpm start                             # Serve production build locally
