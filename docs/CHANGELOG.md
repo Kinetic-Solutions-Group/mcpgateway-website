@@ -8,6 +8,24 @@ All notable changes to MCPGateway.com Website will be documented in this file.
 
 - Initial project setup with Claude Code configuration
 
+## 2026-02-23 — Pillar Pages (feat/pillar-pages)
+
+### Added
+
+- `/mcp-servers` page: hero, 4 feature blocks (Six Server Types, Gateway Modes, AI Generation, One URL), 5 API showcase terminals, CTA
+- `/skills` page: hero, 4 feature blocks (Three Ways to Create, Progressive Loading diagram, AI Generation, Install on Sandboxes), 4 API terminals, CTA
+- `/sandboxes` page: hero, 4 feature blocks (Persistent Containers, Warm Pool diagram, Security checklist, File Management), 5 API terminals, CTA
+- Shared `MiniTerminal` component extracted from three-pillars into `src/components/shared/mini-terminal.tsx`
+- Shared `FeatureBlock` component for alternating text+visual layout
+- Shared `ProductScreenshot` component with glow frame
+- 7 placeholder SVG screenshots in `public/screenshots/`
+- Sitemap updated with /mcp-servers, /skills, /sandboxes, /blog routes
+
+### Changed
+
+- Navbar: replaced "Features" link with three pillar links (MCP Servers, Skills, Sandboxes)
+- Three-pillars homepage section now imports MiniTerminal from shared component
+
 ## 2026-02-23 — Homepage Messaging Redesign (feat/homepage-messaging-redesign)
 
 ### Added

@@ -19,20 +19,20 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Done (recent 2-3 only)
 
-- Homepage messaging redesign merged to production (2026-02-23)
-- Three pillars upgraded: mini-terminals with real API examples (semantic search, AI skill generation, sandbox exec) (2026-02-23)
-- Domain mcpgateway.com connected to Vercel, live in production (2026-02-23)
+- Three dedicated pillar pages built: /mcp-servers, /skills, /sandboxes (2026-02-23)
+- Shared components: MiniTerminal, FeatureBlock, ProductScreenshot extracted (2026-02-23)
+- Navbar updated: MCP Servers | Skills | Sandboxes | Deploy | Blog (2026-02-23)
 
 ### Now
 
-Three pillars API terminal upgrade — reviewing locally, ready to commit and push
+Pillar pages branch `feat/pillar-pages` ready for review and merge
 
 ### Next
 
-- Commit + push three pillars upgrade to production
+- Merge pillar pages to production
+- Capture real product screenshots (replace SVG placeholders)
 - Add OG image for social sharing
 - Wire email notify form to backend (Resend/Mailchimp)
-- Set up MDX for documentation content (replace blog post React components)
 
 ---
 
