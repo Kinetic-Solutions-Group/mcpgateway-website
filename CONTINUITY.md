@@ -19,27 +19,31 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Done (recent 2-3 only)
 
-- Website redesign merged to main, deployed to production (2026-02-21)
-- Deep market research: MCP ecosystem, Shadow AI stats, competitor positioning, messaging best practices (2026-02-23)
+- Homepage messaging redesign implemented on feat/homepage-messaging-redesign branch (2026-02-23)
+  - New hero: "The platform for production AI agents" + architecture diagram
+  - Shadow AI problem section with industry stats (91%, 53%, $670K)
+  - Updated three pillars with code snippets, Deploy Your Way section, blog section, CTA
+  - Two blog posts: "Why AI Agents Need a Control Plane" + "Open Source in the Age of AI Coding"
+  - Blog infrastructure (index + dynamic routing + @tailwindcss/typography)
+- Deep market research: MCP ecosystem, Shadow AI stats, competitor positioning, open source strategy (2026-02-23)
+- Strategic decisions: FSL licensing, marketplace monetization (Kong model), source-available positioning
 
 ### Now
 
-Website content/messaging redesign — translating research into new homepage copy and structure
+PR branch `feat/homepage-messaging-redesign` ready for review and merge to main
 
 ### Next
 
-- Implement new homepage messaging (headline, problem statement, three pillars, dual CTA)
+- Create PR for homepage messaging redesign → merge to production
 - Add OG image for social sharing
-- Set up MDX for documentation content
 - Wire email notify form to backend (Resend/Mailchimp)
+- Set up MDX for documentation content (replace blog post React components)
 
 ---
 
 ## Open Questions
 
-- Which headline angle to go with (category claim vs problem-forward vs capability-forward)
-- Tone: technical/direct vs problem-forward vs capability-forward
-- Whether to create a separate /enterprise page or keep dual-audience on homepage
+- None currently
 
 ## Blockers
 
