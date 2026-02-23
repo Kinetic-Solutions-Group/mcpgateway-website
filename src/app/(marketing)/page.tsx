@@ -1,19 +1,19 @@
 import { Hero } from "@/components/marketing/hero";
+import { ProblemSection } from "@/components/marketing/problem-section";
 import { ThreePillars } from "@/components/marketing/three-pillars";
-import { HowItWorks } from "@/components/marketing/how-it-works";
-import { Architecture } from "@/components/marketing/architecture";
-import { FeatureGrid } from "@/components/marketing/feature-grid";
 import { DeploySection } from "@/components/marketing/deploy-section";
+import { BlogSection } from "@/components/marketing/blog-section";
+import { CtaSection } from "@/components/marketing/cta-section";
 
 export default function HomePage(): React.ReactNode {
   return (
     <>
       <Hero />
+      <ProblemSection />
       <ThreePillars />
-      <HowItWorks />
-      <Architecture />
-      <FeatureGrid />
       <DeploySection />
+      <BlogSection />
+      <CtaSection />
     </>
   );
 }
