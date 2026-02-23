@@ -1,89 +1,17 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Server, BookOpen, Box, Zap } from "lucide-react";
+import { Server, BookOpen, Box } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-
-/* ------------------------------------------------------------------ */
-/*  Syntax-highlighted JSON for mini-terminals                         */
-/* ------------------------------------------------------------------ */
-
-function JsonLine({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}): React.ReactNode {
-  return <div className={`whitespace-pre ${className}`}>{children}</div>;
-}
-
-function K({ children }: { children: React.ReactNode }): React.ReactNode {
-  return <span className="text-primary">{children}</span>;
-}
-
-function S({ children }: { children: React.ReactNode }): React.ReactNode {
-  return <span className="text-[#7ee787]">{children}</span>;
-}
-
-function N({ children }: { children: React.ReactNode }): React.ReactNode {
-  return <span className="text-[#79c0ff]">{children}</span>;
-}
-
-function D({ children }: { children: React.ReactNode }): React.ReactNode {
-  return <span className="text-white/30">{children}</span>;
-}
-
-function M({ children }: { children: React.ReactNode }): React.ReactNode {
-  return <span className="text-white/50">{children}</span>;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Mini-terminal component                                            */
-/* ------------------------------------------------------------------ */
-
-function MiniTerminal({
-  method,
-  path,
-  children,
-  footer,
-}: {
-  method: string;
-  path: string;
-  children: React.ReactNode;
-  footer?: string;
-}): React.ReactNode {
-  return (
-    <div className="mt-5 overflow-hidden rounded-xl border border-white/[0.06] bg-[#0d1117]">
-      {/* Chrome bar */}
-      <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-2.5">
-        <div className="flex items-center gap-1.5">
-          <div className="size-2 rounded-full bg-[#ff5f57]" />
-          <div className="size-2 rounded-full bg-[#febc2e]" />
-          <div className="size-2 rounded-full bg-[#28c840]" />
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="rounded bg-[#28c840]/15 px-1.5 py-0.5 text-[10px] font-bold uppercase text-[#28c840]">
-            {method}
-          </span>
-          <span className="text-[11px] text-white/40">{path}</span>
-        </div>
-        <div className="w-[40px]" />
-      </div>
-
-      {/* Body */}
-      <div className="p-4 font-mono text-[11px] leading-[1.7]">{children}</div>
-
-      {/* Footer stat line */}
-      {footer ? (
-        <div className="flex items-center gap-2 border-t border-white/[0.06] px-4 py-2">
-          <Zap className="size-3 text-primary/60" />
-          <span className="text-[10px] text-white/30">{footer}</span>
-        </div>
-      ) : null}
-    </div>
-  );
-}
+import {
+  MiniTerminal,
+  JsonLine,
+  K,
+  S,
+  N,
+  D,
+  M,
+} from "@/components/shared/mini-terminal";
 
 /* ------------------------------------------------------------------ */
 /*  Pillar data                                                        */
