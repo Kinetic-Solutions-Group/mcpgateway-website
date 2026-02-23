@@ -1,0 +1,12 @@
+<svg width="1440" height="900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1440" height="900" fill="#1a1a2e"/>
+  <rect width="1440" height="900" fill="url(#grid)"/>
+  <rect x="40" y="40" width="1360" height="820" rx="16" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="720" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="32" fill="rgba(255,255,255,0.3)">Skill Detail View</text>
+  <text x="720" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="rgba(223,127,105,0.5)">Screenshot placeholder — swap with real product capture</text>
+</svg>
