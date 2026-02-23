@@ -19,19 +19,25 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Done (recent 2-3 only)
 
-- Website redesign merged to main, deployed to production (2026-02-21)
-- PR #1 merged: coral brand, three pillars, gateway demo terminal (2026-02-21)
-- Bebas Neue headings, app logo, dark-mode-only, real API snippets (2026-02-21)
+- Homepage messaging redesign implemented on feat/homepage-messaging-redesign branch (2026-02-23)
+  - New hero: "The platform for production AI agents" + architecture diagram
+  - Shadow AI problem section with industry stats (91%, 53%, $670K)
+  - Updated three pillars with code snippets, Deploy Your Way section, blog section, CTA
+  - Two blog posts: "Why AI Agents Need a Control Plane" + "Open Source in the Age of AI Coding"
+  - Blog infrastructure (index + dynamic routing + @tailwindcss/typography)
+- Deep market research: MCP ecosystem, Shadow AI stats, competitor positioning, open source strategy (2026-02-23)
+- Strategic decisions: FSL licensing, marketplace monetization (Kong model), source-available positioning
 
 ### Now
 
-Ready for next task
+PR branch `feat/homepage-messaging-redesign` ready for review and merge to main
 
 ### Next
 
+- Create PR for homepage messaging redesign → merge to production
 - Add OG image for social sharing
-- Set up MDX for documentation content
 - Wire email notify form to backend (Resend/Mailchimp)
+- Set up MDX for documentation content (replace blog post React components)
 
 ---
 

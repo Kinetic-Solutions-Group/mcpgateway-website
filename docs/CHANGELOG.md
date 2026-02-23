@@ -8,6 +8,33 @@ All notable changes to MCPGateway.com Website will be documented in this file.
 
 - Initial project setup with Claude Code configuration
 
+## 2026-02-23 — Homepage Messaging Redesign (feat/homepage-messaging-redesign)
+
+### Added
+
+- Problem Section: Shadow AI statistics (91% unmanaged, 53% insecure credentials, $670K breach cost)
+- Blog Section: "Insights" with two post cards linking to /blog
+- CTA Section: "Ready to take control" with dual CTAs and email signup
+- Blog infrastructure: /blog index page, /blog/[slug] dynamic routing, @tailwindcss/typography
+- Blog Post: "Why AI Agents Need a Control Plane" by Pablo Marin (Shadow AI research, references to Anthropic, Gartner, IBM, Astrix Security, NIST)
+- Blog Post: "Open Source in the Age of AI Coding" by Pablo Marin (FSL licensing strategy, references to Sentry, Kong, Grafana, a16z, Tailwind)
+
+### Changed
+
+- Hero: "The platform for production AI agents" with architecture diagram (Agents → Gateway → Servers/Skills/Sandboxes)
+- Hero badge: "Source-Available · API-First · Self-Hosted" (was "Open Source MCP Gateway")
+- Three Pillars: section label "THE SOLUTION", headline "One platform. Three capabilities.", YAML code snippets inside cards
+- Deploy Section: renamed "Deploy Your Way" with Self-Hosted/Marketplaces/Red Hat cards and FSL messaging
+- Navbar: simplified to Features, Deploy, Blog links
+- Metadata: title "The Platform for Production AI Agents", updated description
+
+### Removed
+
+- Terminal demo (GatewayDemo component) from hero
+- How It Works section (merged into three pillars)
+- Architecture section (replaced by hero diagram)
+- Feature Grid section (cut for focus)
+
 ## 2026-02-21 — Website Redesign (feat/website-redesign)
 
 ### Added

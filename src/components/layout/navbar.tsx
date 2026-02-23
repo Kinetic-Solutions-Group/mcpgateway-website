@@ -10,9 +10,8 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "#features", label: "Features" },
-  { href: "#how-it-works", label: "How It Works" },
-  { href: "#architecture", label: "Architecture" },
   { href: "#deploy", label: "Deploy" },
+  { href: "/blog", label: "Blog" },
 ] as const;
 
 export function Navbar(): React.ReactNode {

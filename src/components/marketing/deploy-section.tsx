@@ -1,116 +1,83 @@
 "use client";
 
-import { useState } from "react";
-import type { FormEvent } from "react";
 import { motion } from "motion/react";
-import { Bell } from "lucide-react";
+import { Server, Cloud, Shield } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-
-interface CloudProvider {
-  name: string;
-  subtitle: string;
-  method: string;
+interface DeployOption {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  badge: { label: string; variant: "available" | "coming-soon" };
+  footnote: string;
 }
 
-const providers: CloudProvider[] = [
-  { name: "Azure", subtitle: "Marketplace", method: "One-click on AKS" },
-  { name: "AWS", subtitle: "Marketplace", method: "EKS Add-on" },
-  { name: "Google Cloud", subtitle: "Marketplace", method: "Deploy on GKE" },
-  { name: "Red Hat", subtitle: "OpenShift", method: "Certified Operator" },
+const deployOptions: DeployOption[] = [
+  {
+    icon: Server,
+    title: "Self-Hosted",
+    description:
+      "Deploy on your Kubernetes cluster, your VPC, your compliance boundary. One Helm chart, full control.",
+    badge: { label: "Available Now", variant: "available" },
+    footnote: "Audit every line of code on GitHub",
+  },
+  {
+    icon: Cloud,
+    title: "Cloud Marketplaces",
+    description:
+      "Subscribe on AWS, Azure, or GCP. Use your committed cloud spend. License key activates enterprise features.",
+    badge: { label: "Coming Soon", variant: "coming-soon" },
+    footnote: "AWS \u00b7 Azure \u00b7 GCP",
+  },
+  {
+    icon: Shield,
+    title: "Red Hat Certified",
+    description:
+      "Certified OpenShift Operator. Enterprise support SLAs, CVE response, joint escalation with Red Hat.",
+    badge: { label: "Coming Soon", variant: "coming-soon" },
+    footnote: "OpenShift Operator Hub",
+  },
 ];
 
-function ProviderCard({
-  provider,
+function DeployCard({
+  option,
   index,
 }: {
-  provider: CloudProvider;
+  option: DeployOption;
   index: number;
 }): React.ReactNode {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="card-glow rounded-2xl border border-border/50 bg-card/50 p-6 text-center transition-all duration-300"
-    >
-      <div className="text-2xl font-semibold">{provider.name}</div>
-      <div className="mt-1 text-sm text-muted-foreground">
-        {provider.subtitle}
-      </div>
-      <div className="mt-3 text-xs text-muted-foreground">
-        {provider.method}
-      </div>
-      <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-        Coming Soon
-      </div>
-    </motion.div>
-  );
-}
-
-function NotifyForm(): React.ReactNode {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>): void {
-    e.preventDefault();
-    // TODO: Wire to backend API or email service (e.g. Resend, Mailchimp)
-    // For now, store in localStorage as a temporary measure
-    const existing = JSON.parse(
-      localStorage.getItem("mcpgateway_notify_emails") ?? "[]",
-    ) as string[];
-    if (!existing.includes(email)) {
-      existing.push(email);
-      localStorage.setItem(
-        "mcpgateway_notify_emails",
-        JSON.stringify(existing),
-      );
-    }
-    setSubmitted(true);
-  }
+  const Icon = option.icon;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.3 }}
-      className="mt-12"
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="card-glow rounded-2xl border border-border/50 bg-card/50 p-8 transition-all duration-300"
     >
-      {submitted ? (
-        <p className="text-center text-sm text-primary">
-          Thanks! We&apos;ll notify you when we launch.
-        </p>
+      <div className="mb-5 inline-flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon className="size-6" />
+      </div>
+      <h3 className="text-lg font-semibold">{option.title}</h3>
+      <p className="mt-2 text-sm text-muted-foreground">{option.description}</p>
+      {option.badge.variant === "available" ? (
+        <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400">
+          {option.badge.label}
+        </span>
       ) : (
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center"
-        >
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="your@email.com"
-            required
-            className="h-10 w-full max-w-sm rounded-lg border border-border/50 bg-card/50 px-4 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 sm:w-72"
-          />
-          <Button
-            type="submit"
-            className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
-          >
-            <Bell className="size-4" />
-            Notify Me
-          </Button>
-        </form>
+        <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+          {option.badge.label}
+        </span>
       )}
+      <p className="mt-2 text-xs text-muted-foreground/50">{option.footnote}</p>
     </motion.div>
   );
 }
 
 export function DeploySection(): React.ReactNode {
   return (
-    <section id="deploy" className="relative py-32">
+    <section id="deploy" className="py-32">
       <div className="mx-auto max-w-7xl px-6">
         {/* Section header */}
         <div className="mx-auto max-w-2xl text-center">
@@ -129,7 +96,7 @@ export function DeploySection(): React.ReactNode {
             transition={{ delay: 0.1 }}
             className="mt-4 font-display text-4xl uppercase tracking-wide sm:text-5xl"
           >
-            Deploy on Your Cloud
+            Your infrastructure. Your rules.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -138,20 +105,16 @@ export function DeploySection(): React.ReactNode {
             transition={{ delay: 0.2 }}
             className="mt-4 text-lg text-muted-foreground"
           >
-            One-click deployment on the major cloud marketplaces. Starting at
-            $99/mo.
+            Source-available under FSL. Run it anywhere. No vendor lock-in.
           </motion.p>
         </div>
 
-        {/* Cloud provider cards */}
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {providers.map((provider, i) => (
-            <ProviderCard key={provider.name} provider={provider} index={i} />
+        {/* Deploy option cards */}
+        <div className="mt-16 grid gap-6 lg:grid-cols-3">
+          {deployOptions.map((option, i) => (
+            <DeployCard key={option.title} option={option} index={i} />
           ))}
         </div>
-
-        {/* Email notification form */}
-        <NotifyForm />
       </div>
     </section>
   );

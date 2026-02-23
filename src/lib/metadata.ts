@@ -5,7 +5,7 @@ const siteUrl = "https://mcpgateway.com";
 export const siteConfig = {
   name: "MCP Gateway",
   description:
-    "Production-grade infrastructure for AI agents. Connect to any tool with MCP Servers, teach expert workflows with Agent Skills, and execute code safely in Sandboxes.",
+    "The platform for production AI agents. Manage MCP servers, skills, and sandboxes with enterprise governance. Source-available, self-hosted, API-first.",
   url: siteUrl,
   ogImage: `${siteUrl}/og.png`,
   links: {
@@ -16,7 +16,7 @@ export const siteConfig = {
 export const baseMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${siteConfig.name} — Your AI Command Center`,
+    default: `${siteConfig.name} — The Platform for Production AI Agents`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
