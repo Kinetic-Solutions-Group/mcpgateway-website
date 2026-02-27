@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Github, Menu, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -19,10 +19,24 @@ const navLinks = [
 
 export function Navbar(): React.ReactNode {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function onScroll(): void {
+      setScrolled(window.scrollY > 20);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <header className="fixed top-0 z-50 w-full">
-      <div className="glass border-b border-border/50">
+      <div
+        className={cn(
+          "border-b border-border/50 backdrop-blur-xl transition-colors duration-300",
+          scrolled ? "bg-background/90 border-border/80" : "bg-background/20",
+        )}
+      >
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           {/* Logo */}
           <Link
@@ -94,7 +108,7 @@ export function Navbar(): React.ReactNode {
       {/* Mobile menu */}
       <div
         className={cn(
-          "glass border-b border-border/50 md:hidden",
+          "border-b border-border/50 bg-background/90 backdrop-blur-xl md:hidden",
           mobileOpen ? "block" : "hidden",
         )}
       >
