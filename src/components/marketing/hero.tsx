@@ -152,46 +152,46 @@ function ArchitectureDiagram(): React.ReactNode {
         </div>
       </motion.div>
 
-      {/* ── Fan-out Connectors (SVG) ── */}
+      {/* ── Fan-out Connectors (SVG + particles) ── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 1.2 }}
-        className="relative"
+        className="relative hidden md:block"
       >
         <svg
-          viewBox="0 0 600 60"
+          viewBox="0 0 600 50"
           width="100%"
-          height="60"
+          height="50"
           fill="none"
-          className="overflow-visible"
+          preserveAspectRatio="none"
         >
           {/* Left path */}
           <path
-            d="M300,0 Q200,30 100,60"
+            d="M300,0 Q200,25 100,50"
             stroke="currentColor"
-            className="text-primary/30"
-            strokeWidth={1}
+            className="text-primary/20"
+            strokeWidth={1.5}
           />
           {/* Center path */}
           <path
-            d="M300,0 Q300,30 300,60"
+            d="M300,0 L300,50"
             stroke="currentColor"
-            className="text-primary/30"
-            strokeWidth={1}
+            className="text-primary/20"
+            strokeWidth={1.5}
           />
           {/* Right path */}
           <path
-            d="M300,0 Q400,30 500,60"
+            d="M300,0 Q400,25 500,50"
             stroke="currentColor"
-            className="text-primary/30"
-            strokeWidth={1}
+            className="text-primary/20"
+            strokeWidth={1.5}
           />
         </svg>
 
         {/* Particles on fan-out paths */}
-        <div className="absolute inset-0 pointer-events-none">
-          {/* Left path particles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Left particles */}
           {[0, 0.7, 1.4].map((delay) => (
             <span
               key={`fan-left-${delay}`}
@@ -200,13 +200,13 @@ function ArchitectureDiagram(): React.ReactNode {
                 {
                   "--particle-delay": `${delay}s`,
                   "--particle-animation": "particle-flow-fan-left",
-                  "--fan-x": "33.3%",
-                  "--fan-y": "60px",
+                  "--fan-x": "160px",
+                  "--fan-y": "50px",
                 } as React.CSSProperties
               }
             />
           ))}
-          {/* Center path particles */}
+          {/* Center particles */}
           {[0, 0.7, 1.4].map((delay) => (
             <span
               key={`fan-center-${delay}`}
@@ -214,12 +214,12 @@ function ArchitectureDiagram(): React.ReactNode {
               style={
                 {
                   "--particle-delay": `${delay}s`,
-                  "--flow-distance": "60px",
+                  "--flow-distance": "50px",
                 } as React.CSSProperties
               }
             />
           ))}
-          {/* Right path particles */}
+          {/* Right particles */}
           {[0, 0.7, 1.4].map((delay) => (
             <span
               key={`fan-right-${delay}`}
@@ -228,14 +228,17 @@ function ArchitectureDiagram(): React.ReactNode {
                 {
                   "--particle-delay": `${delay}s`,
                   "--particle-animation": "particle-flow-fan-right",
-                  "--fan-x": "33.3%",
-                  "--fan-y": "60px",
+                  "--fan-x": "160px",
+                  "--fan-y": "50px",
                 } as React.CSSProperties
               }
             />
           ))}
         </div>
       </motion.div>
+
+      {/* Mobile: simple vertical connector instead of SVG fan-out */}
+      <div className="mx-auto h-8 w-px bg-gradient-to-b from-primary/30 to-border md:hidden" />
 
       {/* ── Bottom Pillar Cards ── */}
       <motion.div
