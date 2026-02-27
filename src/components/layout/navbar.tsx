@@ -9,8 +9,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "#features", label: "Features" },
-  { href: "#deploy", label: "Deploy" },
+  { href: "/mcp-servers", label: "MCP Servers" },
+  { href: "/skills", label: "Skills" },
+  { href: "/sandboxes", label: "Sandboxes" },
+  { href: "/#deploy", label: "Deploy" },
   { href: "/blog", label: "Blog" },
 ] as const;
 
@@ -67,7 +69,7 @@ export function Navbar(): React.ReactNode {
               className="bg-primary text-primary-foreground hover:bg-primary/90"
               asChild
             >
-              <Link href="#deploy">Deploy</Link>
+              <Link href="/#deploy">Deploy</Link>
             </Button>
           </div>
 
@@ -122,7 +124,7 @@ export function Navbar(): React.ReactNode {
               size="sm"
               asChild
             >
-              <Link href="#deploy" onClick={() => setMobileOpen(false)}>
+              <Link href="/#deploy" onClick={() => setMobileOpen(false)}>
                 Deploy
               </Link>
             </Button>

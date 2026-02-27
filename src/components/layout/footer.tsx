@@ -5,15 +5,16 @@ const footerSections = [
   {
     title: "Product",
     links: [
-      { label: "Features", href: "#features" },
-      { label: "How It Works", href: "#how-it-works" },
-      { label: "Architecture", href: "#architecture" },
-      { label: "Deploy", href: "#deploy" },
+      { label: "MCP Servers", href: "/mcp-servers" },
+      { label: "Agent Skills", href: "/skills" },
+      { label: "Sandboxes", href: "/sandboxes" },
+      { label: "Deploy", href: "/#deploy" },
     ],
   },
   {
     title: "Resources",
     links: [
+      { label: "Blog", href: "/blog" },
       {
         label: "GitHub",
         href: "https://github.com/Kinetic-Solutions-Group/mcpgateway",

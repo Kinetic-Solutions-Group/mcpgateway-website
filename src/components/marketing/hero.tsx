@@ -5,30 +5,39 @@ import { motion } from "motion/react";
 import { ArrowRight, Github, Server, BookOpen, Box } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { WaveBackground } from "@/components/shared/wave-background";
+import { ShaderBackground } from "@/components/shared/shader-background";
 
 /* ------------------------------------------------------------------ */
-/*  Grid Background                                                    */
+/*  Background Switcher — toggle between 3 options for comparison      */
+/*  Set HERO_BG to "grid", "waves", or "shader" to switch             */
 /* ------------------------------------------------------------------ */
 
-function GridBackground(): React.ReactNode {
+function GridOverlay(): React.ReactNode {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Grid pattern — matches the MCP Gateway app login page */}
       <div
-        className="absolute inset-0 opacity-[0.02]"
+        className="absolute inset-0 opacity-[0.06]"
         style={{
           backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px),
                            linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
           backgroundSize: "60px 60px",
         }}
       />
-
-      {/* Radial fade */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,var(--background)_70%)]" />
-
-      {/* Coral accent glow */}
-      <div className="absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[120px]" />
     </div>
+  );
+}
+
+function HeroBackground(): React.ReactNode {
+  return (
+    <>
+      {/* Layer 1: WebGL shader gradient (deepest) */}
+      <ShaderBackground />
+      {/* Layer 2: Grid pattern overlay */}
+      <GridOverlay />
+      {/* Layer 3: Animated SVG waves on top */}
+      <WaveBackground />
+    </>
   );
 }
 
@@ -116,7 +125,7 @@ function ArchitectureDiagram(): React.ReactNode {
 export function Hero(): React.ReactNode {
   return (
     <section className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 pt-16">
-      <GridBackground />
+      <HeroBackground />
 
       <div className="relative z-10 mx-auto w-full max-w-5xl text-center">
         {/* Badge */}
