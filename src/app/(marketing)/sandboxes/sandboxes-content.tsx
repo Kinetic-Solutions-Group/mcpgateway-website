@@ -88,9 +88,9 @@ function ScreenshotSection(): React.ReactNode {
   return (
     <section className="py-16 px-6">
       <ProductScreenshot
-        src="/screenshots/sandboxes-dashboard.svg"
-        alt="Sandboxes Dashboard"
-        caption="Monitor and manage isolated execution environments"
+        src="/images/sandboxes-list.png"
+        alt="Sandboxes list showing running and stopped instances with resource usage and recent activity"
+        caption="Sandbox instances with live status, resource allocation, and recent commands"
         priority
       />
     </section>
@@ -132,8 +132,9 @@ function HowItWorks(): React.ReactNode {
             index={0}
           >
             <ProductScreenshot
-              src="/screenshots/sandbox-detail.svg"
-              alt="Sandbox Detail View"
+              src="/images/settings-sandboxes.png"
+              alt="Sandbox settings showing provider configuration, resource quotas, and timeout policies"
+              caption="Configure sandbox provider, resource quotas, and idle timeouts"
             />
           </FeatureBlock>
 
