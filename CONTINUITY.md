@@ -25,7 +25,7 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Now
 
-Pillar pages branch `feat/pillar-pages` ready for review and merge
+Pillar pages branch `feat/pillar-pages` ready to push and merge
 
 ### Next
 

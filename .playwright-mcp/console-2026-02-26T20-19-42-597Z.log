@@ -1,0 +1,9 @@
+[     955ms] [ERROR] Player ready error: TypeError: “https://vivi.bot/wp-content/uploads/2025/12/7020091_Ring_Round_3840x2160.mp4” is not a vimeo.com url.
+    at a (https://player.vimeo.com/api/player.js:2:1237)
+    at https://player.vimeo.com/api/player.js:2:15522
+    at new Promise (<anonymous>)
+    at new Player (https://player.vimeo.com/api/player.js:2:15048)
+    at initVimeoPlayer (https://vivi.bot/:3:9600)
+    at https://vivi.bot/:3:10232
+    at Array.forEach (<anonymous>)
+    at IntersectionObserver.<anonymous> (https://vivi.bot/:3:10155) @ https://vivi.bot/:2

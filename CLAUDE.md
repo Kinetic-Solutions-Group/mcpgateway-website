@@ -4,7 +4,32 @@
 
 ### What Is This?
 
-Marketing and documentation website for MCP Gateway — the open-source MCP Gateway application located in the parent directory (`../mcpgateway`). This is a standalone Next.js site, not part of the gateway codebase itself.
+Marketing and documentation website for MCP Gateway — the MCP Gateway product located in the parent directory (`../mcpgateway`). This is a standalone Next.js site, not part of the gateway codebase itself.
+
+**Product codebase:** `../mcpgateway` (always check this for current features, API endpoints, and capabilities)
+
+**Website must stay in sync with the product.** Before writing or updating any website content (messaging, features, API examples, blog posts), read the product codebase to verify accuracy. The product is the source of truth for:
+
+- API endpoints and request/response formats
+- Feature capabilities and limitations
+- Supported server types, skill formats, sandbox options
+- Architecture and technical details
+
+**Key product documentation (read these to understand how the product works):**
+
+| File                                                                | What it covers                              |
+| ------------------------------------------------------------------- | ------------------------------------------- |
+| `../mcpgateway/docs/architecture/how-mcp-servers-work.md`           | Server types, gateway modes, tool routing   |
+| `../mcpgateway/docs/architecture/how-skills-work.md`                | Skill packages, import, generation, catalog |
+| `../mcpgateway/docs/architecture/how-sandboxes-work.md`             | Container execution, warm pools, security   |
+| `../mcpgateway/docs/architecture/how-auth-works.md`                 | Auth flow, API keys, OAuth, RBAC            |
+| `../mcpgateway/docs/architecture/how_agents_work.md`                | Agent connection patterns, gateway endpoint |
+| `../mcpgateway/docs/architecture/how-playground-works.md`           | Interactive agent testing, chat sessions    |
+| `../mcpgateway/docs/architecture/how-deployment-works.md`           | Helm, Kubernetes, cloud deployment          |
+| `../mcpgateway/docs/architecture/how_telemetry_and_metrics_work.md` | Observability, Prometheus, OpenTelemetry    |
+| `../mcpgateway/docs/architecture/how-prompts-work.md`               | Customizable system prompts                 |
+| `../mcpgateway/docs/architecture/how-curated-servers-work.md`       | Bundles and curated tool collections        |
+| `../mcpgateway/docs/api/generation.md`                              | AI server generation pipeline               |
 
 ### Tech Stack
 
