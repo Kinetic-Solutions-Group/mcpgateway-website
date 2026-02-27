@@ -88,9 +88,9 @@ function ScreenshotSection(): React.ReactNode {
   return (
     <section className="py-16 px-6">
       <ProductScreenshot
-        src="/screenshots/skills-catalog.svg"
-        alt="Skills Catalog"
-        caption="Browse, import, and manage agent skills from one interface"
+        src="/images/catalog-skills.png"
+        alt="Agent Skills catalog showing skills from Anthropic, OpenAI, and Skills.sh sources"
+        caption="Agent Skills catalog — browse and import skills from Anthropic, OpenAI, and Skills.sh"
         priority
       />
     </section>
@@ -132,8 +132,8 @@ function HowItWorks(): React.ReactNode {
             index={0}
           >
             <ProductScreenshot
-              src="/screenshots/skills-detail.svg"
-              alt="Skill Detail View"
+              src="/images/playground.png"
+              alt="Playground with agent chat, tools list, and skills loaded"
             />
           </FeatureBlock>
 
