@@ -47,74 +47,260 @@ function HeroBackground(): React.ReactNode {
 
 function ArchitectureDiagram(): React.ReactNode {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay: 0.5 }}
-      className="mx-auto w-full max-w-3xl"
-    >
-      {/* AI Agents box */}
-      <div className="rounded-xl border border-border/50 bg-card/50 p-4 text-center">
+    <div className="mx-auto w-full max-w-4xl">
+      {/* ── AI Agents Section ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="glass rounded-xl border border-border/50 p-4 text-center"
+      >
         <p className="text-sm font-semibold text-foreground">AI Agents</p>
-        <p className="mt-1 text-xs text-muted-foreground">
-          LangChain&nbsp;&middot;&nbsp;CrewAI&nbsp;&middot;&nbsp;Claude&nbsp;&middot;&nbsp;OpenAI&nbsp;&middot;&nbsp;Gemini&nbsp;&middot;&nbsp;Custom
-        </p>
-      </div>
+        <div className="mt-2.5 flex flex-wrap items-center justify-center gap-2">
+          {[
+            "LangChain",
+            "CrewAI",
+            "Claude",
+            "VS Code",
+            "Copilot Studio",
+            "Cursor",
+          ].map((agent) => (
+            <span
+              key={agent}
+              className="rounded-full bg-card/80 border border-border/50 px-3 py-1 text-xs text-muted-foreground"
+            >
+              {agent}
+            </span>
+          ))}
+        </div>
+      </motion.div>
 
-      {/* Connector: top box → pill */}
-      <div className="mx-auto h-8 w-px bg-gradient-to-b from-border to-primary/50" />
+      {/* ── Connector: Agents → Pill ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
+        className="relative mx-auto h-12 w-px bg-gradient-to-b from-border/50 to-primary/40"
+        style={{ "--flow-distance": "48px" } as React.CSSProperties}
+      >
+        {[0, 0.7, 1.4].map((delay) => (
+          <span
+            key={delay}
+            className="absolute left-1/2 -translate-x-1/2 size-1.5 rounded-full bg-primary animate-particle"
+            style={{ "--particle-delay": `${delay}s` } as React.CSSProperties}
+          />
+        ))}
+      </motion.div>
 
-      {/* ONE URL · ONE API KEY pill */}
-      <div className="flex justify-center">
-        <span className="rounded-full bg-primary/10 px-4 py-1 text-xs font-medium text-primary">
+      {/* ── ONE URL · ONE API KEY Pill ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.8 }}
+        className="flex justify-center"
+      >
+        <span className="animate-pulse-glow rounded-full border border-primary/40 bg-primary/10 px-5 py-1.5 text-xs font-semibold tracking-wider uppercase text-primary">
           ONE URL&nbsp;&middot;&nbsp;ONE API KEY
         </span>
-      </div>
+      </motion.div>
 
-      {/* Connector: pill → gateway */}
-      <div className="mx-auto h-8 w-px bg-gradient-to-b from-primary/50 to-primary/30" />
+      {/* ── Connector: Pill → Gateway ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.9 }}
+        className="relative mx-auto h-12 w-px bg-gradient-to-b from-border/50 to-primary/40"
+        style={{ "--flow-distance": "48px" } as React.CSSProperties}
+      >
+        {[0, 0.7, 1.4].map((delay) => (
+          <span
+            key={delay}
+            className="absolute left-1/2 -translate-x-1/2 size-1.5 rounded-full bg-primary animate-particle"
+            style={{ "--particle-delay": `${delay}s` } as React.CSSProperties}
+          />
+        ))}
+      </motion.div>
 
-      {/* MCP Gateway box */}
-      <div className="rounded-xl border border-primary/30 bg-primary/5 p-5 text-center">
-        <p className="font-display text-xl uppercase text-primary">
+      {/* ── MCP Gateway Box ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.0 }}
+        className="rounded-2xl border border-primary/30 bg-gradient-to-b from-primary/8 to-primary/3 p-6 text-center"
+        style={{ boxShadow: "inset 0 0 40px rgba(223, 127, 105, 0.06)" }}
+      >
+        <p className="font-display text-2xl uppercase text-primary tracking-wide">
           MCP Gateway
         </p>
-        <div className="mt-3 flex items-center justify-center gap-3">
-          <span className="rounded-md bg-primary/10 px-2.5 py-1 text-xs text-primary/80">
-            Auth
-          </span>
-          <span className="rounded-md bg-primary/10 px-2.5 py-1 text-xs text-primary/80">
-            Route
-          </span>
-          <span className="rounded-md bg-primary/10 px-2.5 py-1 text-xs text-primary/80">
-            Audit
-          </span>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          {[
+            "Auth",
+            "Route",
+            "Audit",
+            "Rate Limit",
+            "Telemetry",
+            "RBAC",
+            "Playground",
+          ].map((cap) => (
+            <span
+              key={cap}
+              className="rounded-md bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary/80"
+            >
+              {cap}
+            </span>
+          ))}
         </div>
-      </div>
+      </motion.div>
 
-      {/* Connector: gateway → bottom boxes (three lines) */}
-      <div className="grid grid-cols-3">
-        <div className="mx-auto h-8 w-px bg-gradient-to-b from-primary/30 to-border" />
-        <div className="mx-auto h-8 w-px bg-gradient-to-b from-primary/30 to-border" />
-        <div className="mx-auto h-8 w-px bg-gradient-to-b from-primary/30 to-border" />
-      </div>
+      {/* ── Fan-out Connectors (SVG + particles) ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.2 }}
+        className="relative hidden md:block"
+      >
+        <svg
+          viewBox="0 0 600 50"
+          width="100%"
+          height="50"
+          fill="none"
+          preserveAspectRatio="none"
+        >
+          {/* Left path */}
+          <path
+            d="M300,0 Q200,25 100,50"
+            stroke="currentColor"
+            className="text-primary/20"
+            strokeWidth={1.5}
+          />
+          {/* Center path */}
+          <path
+            d="M300,0 L300,50"
+            stroke="currentColor"
+            className="text-primary/20"
+            strokeWidth={1.5}
+          />
+          {/* Right path */}
+          <path
+            d="M300,0 Q400,25 500,50"
+            stroke="currentColor"
+            className="text-primary/20"
+            strokeWidth={1.5}
+          />
+        </svg>
 
-      {/* Bottom boxes: MCP Servers, Agent Skills, Sandboxes */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-lg border border-border/50 bg-card/50 px-4 py-3 text-center">
-          <Server className="mx-auto mb-1.5 size-4 text-muted-foreground" />
+        {/* Particles on fan-out paths */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Left particles */}
+          {[0, 0.7, 1.4].map((delay) => (
+            <span
+              key={`fan-left-${delay}`}
+              className="absolute left-1/2 top-0 -translate-x-1/2 size-1.5 rounded-full bg-primary animate-particle"
+              style={
+                {
+                  "--particle-delay": `${delay}s`,
+                  "--particle-animation": "particle-flow-fan-left",
+                  "--fan-x": "160px",
+                  "--fan-y": "50px",
+                } as React.CSSProperties
+              }
+            />
+          ))}
+          {/* Center particles */}
+          {[0, 0.7, 1.4].map((delay) => (
+            <span
+              key={`fan-center-${delay}`}
+              className="absolute left-1/2 top-0 -translate-x-1/2 size-1.5 rounded-full bg-primary animate-particle"
+              style={
+                {
+                  "--particle-delay": `${delay}s`,
+                  "--flow-distance": "50px",
+                } as React.CSSProperties
+              }
+            />
+          ))}
+          {/* Right particles */}
+          {[0, 0.7, 1.4].map((delay) => (
+            <span
+              key={`fan-right-${delay}`}
+              className="absolute left-1/2 top-0 -translate-x-1/2 size-1.5 rounded-full bg-primary animate-particle"
+              style={
+                {
+                  "--particle-delay": `${delay}s`,
+                  "--particle-animation": "particle-flow-fan-right",
+                  "--fan-x": "160px",
+                  "--fan-y": "50px",
+                } as React.CSSProperties
+              }
+            />
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Mobile: simple vertical connector instead of SVG fan-out */}
+      <div className="mx-auto h-8 w-px bg-gradient-to-b from-primary/30 to-border md:hidden" />
+
+      {/* ── Bottom Pillar Cards ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.4 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+      >
+        {/* Card 1 — MCP Servers */}
+        <div className="glass rounded-xl border border-border/40 p-4 text-left">
+          <Server className="size-5 text-primary/70 mb-2" />
           <p className="text-sm font-semibold text-foreground">MCP Servers</p>
+          <div className="flex flex-wrap gap-1.5 mt-2.5">
+            {["GitHub", "Slack", "Jira", "Linear"].map((tag) => (
+              <span
+                key={tag}
+                className="rounded bg-primary/8 px-2 py-0.5 text-[10px] font-medium text-primary/70"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-1.5">+12 more</p>
         </div>
-        <div className="rounded-lg border border-border/50 bg-card/50 px-4 py-3 text-center">
-          <BookOpen className="mx-auto mb-1.5 size-4 text-muted-foreground" />
+
+        {/* Card 2 — Agent Skills */}
+        <div className="glass rounded-xl border border-border/40 p-4 text-left">
+          <BookOpen className="size-5 text-primary/70 mb-2" />
           <p className="text-sm font-semibold text-foreground">Agent Skills</p>
+          <div className="flex flex-wrap gap-1.5 mt-2.5">
+            {["bigquery", "pdf", "docx", "xlsx"].map((tag) => (
+              <span
+                key={tag}
+                className="rounded bg-primary/8 px-2 py-0.5 text-[10px] font-medium text-primary/70"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-1.5">+8 more</p>
         </div>
-        <div className="rounded-lg border border-border/50 bg-card/50 px-4 py-3 text-center">
-          <Box className="mx-auto mb-1.5 size-4 text-muted-foreground" />
+
+        {/* Card 3 — Sandboxes */}
+        <div className="glass rounded-xl border border-border/40 p-4 text-left">
+          <Box className="size-5 text-primary/70 mb-2" />
           <p className="text-sm font-semibold text-foreground">Sandboxes</p>
+          <div className="flex flex-wrap gap-1.5 mt-2.5">
+            {["Python", "Bash", "Node.js"].map((tag) => (
+              <span
+                key={tag}
+                className="rounded bg-primary/8 px-2 py-0.5 text-[10px] font-medium text-primary/70"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-1.5">
+            Warm pool ready
+          </p>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
 
