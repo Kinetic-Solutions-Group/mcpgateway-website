@@ -137,12 +137,25 @@ function HowItWorks(): React.ReactNode {
             />
           </FeatureBlock>
 
-          {/* Block 2: Gateway Modes */}
+          {/* Block 2: Server Detail & Tool Management */}
+          <FeatureBlock
+            heading="Deep Server Management"
+            description="Drill into any server to see its tools, credentials, connection settings, and sync status. Enable or disable individual tools, search across tool schemas, and sync on-demand to pick up upstream changes."
+            reversed
+            index={1}
+          >
+            <ProductScreenshot
+              src="/images/server-detail.png"
+              alt="Server detail view — tools, credentials, connection settings, and sync status"
+            />
+          </FeatureBlock>
+
+          {/* Block 3: Gateway Modes */}
           <FeatureBlock
             heading="Three Gateway Modes"
             description="LIST mode returns all tools when you have fewer than 20. SEARCH+EXECUTE mode uses semantic search when you have 100+ tools — 99.5% context reduction. AUTO mode switches dynamically based on your tool count."
             reversed
-            index={1}
+            index={2}
           >
             <MiniTerminal method="POST" path="/mcp/gateway">
               <M>{`// JSON-RPC: tools/list`}</M>
@@ -225,11 +238,11 @@ function HowItWorks(): React.ReactNode {
             </MiniTerminal>
           </FeatureBlock>
 
-          {/* Block 3: AI Server Generation */}
+          {/* Block 4: AI Server Generation */}
           <FeatureBlock
             heading="AI Server Generation"
             description="Paste an API docs URL or OpenAPI spec. The Deep Agent analyzes the API, generates tool definitions, and deploys a working virtual MCP server. Review and approve before it goes live."
-            index={2}
+            index={3}
           >
             <MiniTerminal method="POST" path="/api/v1/servers/generate">
               <M>{`// Request`}</M>
@@ -294,12 +307,12 @@ function HowItWorks(): React.ReactNode {
             </MiniTerminal>
           </FeatureBlock>
 
-          {/* Block 4: One URL, Every Tool */}
+          {/* Block 5: One URL, Every Tool */}
           <FeatureBlock
             heading="One URL, Every Tool"
             description="Point any MCP client — Claude Desktop, Cursor, VS Code, Windsurf — at the unified gateway endpoint. One URL and one API key gives your agent access to every registered server."
             reversed
-            index={3}
+            index={4}
           >
             <MiniTerminal method="GET" path="mcp.json">
               <JsonLine>
