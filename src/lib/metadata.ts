@@ -7,7 +7,7 @@ export const siteConfig = {
   description:
     "The platform for production AI agents. Manage MCP servers, skills, and sandboxes with enterprise governance. Source-available, self-hosted, API-first.",
   url: siteUrl,
-  ogImage: `${siteUrl}/og.png`,
+  ogImage: `${siteUrl}/opengraph-image`,
   links: {
     github: "https://github.com/Kinetic-Solutions-Group/mcpgateway",
   },
