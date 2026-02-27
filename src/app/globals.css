@@ -294,6 +294,90 @@
       transparent
     );
   }
+
+  /* Architecture chart — particle flow animation */
+  .animate-particle {
+    animation: var(--particle-animation, particle-flow) var(--particle-duration, 2s)
+      linear infinite;
+    animation-delay: var(--particle-delay, 0s);
+  }
+
+  /* Architecture chart — pulsing glow on gateway node */
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+}
+
+/* ========================================================================
+   KEYFRAMES — Architecture chart particles and glow
+   ======================================================================== */
+
+/* Particle traveling straight down a vertical connector */
+@keyframes particle-flow {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(var(--flow-distance, 60px));
+    opacity: 0;
+  }
+}
+
+/* Particle fanning out to the left (negative X, positive Y) */
+@keyframes particle-flow-fan-left {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+      calc(-1 * var(--fan-x, 40px)),
+      var(--fan-y, 50px)
+    );
+    opacity: 0;
+  }
+}
+
+/* Particle fanning out to the right (positive X, positive Y) */
+@keyframes particle-flow-fan-right {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--fan-x, 40px), var(--fan-y, 50px));
+    opacity: 0;
+  }
+}
+
+/* Pulsing box-shadow glow using brand coral */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 12px 2px rgba(223, 127, 105, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 24px 6px rgba(223, 127, 105, 0.5);
+  }
 }
 
 /* ========================================================================
