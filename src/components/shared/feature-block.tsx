@@ -19,19 +19,37 @@ export function FeatureBlock({
 }: FeatureBlockProps): React.ReactNode {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`flex flex-col gap-8 md:flex-row md:items-center md:gap-12 ${reversed ? "md:flex-row-reverse" : ""}`}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
+      className={`flex flex-col gap-10 md:flex-row md:items-center md:gap-16 ${reversed ? "md:flex-row-reverse" : ""}`}
     >
-      <div className="md:w-1/2">
-        <h3 className="text-2xl font-semibold">{heading}</h3>
-        <p className="mt-3 leading-relaxed text-muted-foreground">
-          {description}
-        </p>
+      {/* Text side */}
+      <div className="md:w-[45%]">
+        <motion.div
+          initial={{ opacity: 0, x: reversed ? 20 : -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
+        >
+          <h3 className="text-2xl font-semibold tracking-tight">{heading}</h3>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            {description}
+          </p>
+        </motion.div>
       </div>
-      <div className="md:w-1/2">{children}</div>
+
+      {/* Visual side */}
+      <motion.div
+        className="md:w-[55%]"
+        initial={{ opacity: 0, x: reversed ? -20 : 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+      >
+        {children}
+      </motion.div>
     </motion.div>
   );
 }
