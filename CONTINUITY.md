@@ -19,18 +19,17 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Done (recent 2-3 only)
 
-- Three dedicated pillar pages built: /mcp-servers, /skills, /sandboxes (2026-02-23)
-- Shared components: MiniTerminal, FeatureBlock, ProductScreenshot extracted (2026-02-23)
-- Navbar updated: MCP Servers | Skills | Sandboxes | Deploy | Blog (2026-02-23)
+- Pillar pages with real product screenshots, lightbox, visual effects (2026-02-26)
+- Hero background: shader gradient + SVG waves + grid overlay layered (2026-02-26)
+- 16 product screenshots renamed and wired into /mcp-servers, /skills, /sandboxes (2026-02-26)
 
 ### Now
 
-Pillar pages branch `feat/pillar-pages` ready to push and merge
+Polishing pillar page visuals on `feat/pillar-pages` branch (PR #3 open)
 
 ### Next
 
-- Merge pillar pages to production
-- Capture real product screenshots (replace SVG placeholders)
+- Merge pillar pages PR #3 to production
 - Add OG image for social sharing
 - Wire email notify form to backend (Resend/Mailchimp)
 
