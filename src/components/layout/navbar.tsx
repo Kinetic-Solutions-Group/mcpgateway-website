@@ -12,6 +12,7 @@ const navLinks = [
   { href: "/mcp-servers", label: "MCP Servers" },
   { href: "/skills", label: "Skills" },
   { href: "/sandboxes", label: "Sandboxes" },
+  { href: "/observability", label: "Observability" },
   { href: "/#deploy", label: "Deploy" },
   { href: "/blog", label: "Blog" },
 ] as const;

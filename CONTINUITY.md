@@ -19,17 +19,17 @@ Marketing and documentation website for MCP Gateway (mcpgateway.com)
 
 ### Done (recent 2-3 only)
 
-- Pillar pages with real product screenshots, lightbox, visual effects (2026-02-26)
-- Hero background: shader gradient + SVG waves + grid overlay layered (2026-02-26)
-- 16 product screenshots renamed and wired into /mcp-servers, /skills, /sandboxes (2026-02-26)
+- Observability pillar page with 5 product screenshots, API terminals, nav/footer links (2026-02-26)
+- Architecture chart redesign: flowing particles, expanded content, glassmorphic cards (2026-02-26)
+- Wired remaining unused screenshots into /mcp-servers and /sandboxes (2026-02-26)
 
 ### Now
 
-Polishing pillar page visuals on `feat/pillar-pages` branch (PR #3 open)
+Two branches ready for PRs: `feat/architecture-chart-redesign` and `feat/observability-page`
 
 ### Next
 
-- Merge pillar pages PR #3 to production
+- Create PRs and merge both branches to production
 - Add OG image for social sharing
 - Wire email notify form to backend (Resend/Mailchimp)
 

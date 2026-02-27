@@ -307,6 +307,18 @@ function HowItWorks(): React.ReactNode {
               </JsonLine>
             </MiniTerminal>
           </FeatureBlock>
+
+          {/* Block 5: Pre-built Images */}
+          <FeatureBlock
+            heading="Pre-built Image Catalog"
+            description="Choose from pre-built sandbox images: Skills Runtime (Python, Node.js, pre-installed packages) or Data Science (pandas, numpy, scipy, scikit-learn). Import with one click — the image builds locally from included package specs."
+            index={4}
+          >
+            <ProductScreenshot
+              src="/images/catalog-sandbox-images.png"
+              alt="Sandbox image catalog — Skills Runtime and Data Science images ready to import"
+            />
+          </FeatureBlock>
         </div>
       </div>
     </section>

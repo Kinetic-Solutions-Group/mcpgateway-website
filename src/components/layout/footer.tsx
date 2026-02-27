@@ -8,6 +8,7 @@ const footerSections = [
       { label: "MCP Servers", href: "/mcp-servers" },
       { label: "Agent Skills", href: "/skills" },
       { label: "Sandboxes", href: "/sandboxes" },
+      { label: "Observability", href: "/observability" },
       { label: "Deploy", href: "/#deploy" },
     ],
   },

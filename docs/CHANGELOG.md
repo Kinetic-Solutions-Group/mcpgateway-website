@@ -2,11 +2,34 @@
 
 All notable changes to MCPGateway.com Website will be documented in this file.
 
-## [Unreleased]
+## 2026-02-26 — Observability Page (feat/observability-page)
 
 ### Added
 
-- Initial project setup with Claude Code configuration
+- `/observability` pillar page: hero, dashboard screenshot, 4 feature blocks (Distributed Tracing, Prometheus Metrics, Full Audit Trail, Token Usage Analytics), 2 API showcase terminals, CTA
+- Observability link in navbar and footer
+- `server-detail.png` screenshot wired into `/mcp-servers` as "Deep Server Management" feature block
+- `catalog-sandbox-images.png` screenshot wired into `/sandboxes` as "Pre-built Image Catalog" feature block
+- 5 previously unused product screenshots now displayed (dashboard, monitoring-latency, request-history, token-usage, settings-telemetry)
+
+## 2026-02-26 — Architecture Chart Redesign (feat/architecture-chart-redesign)
+
+### Added
+
+- CSS keyframes for flowing particle animation (`particle-flow`, `particle-flow-fan-left/right`, `pulse-glow`)
+- `.animate-particle` and `.animate-pulse-glow` utility classes
+
+### Changed
+
+- Hero architecture diagram: upgraded from static text to premium animated version
+- Agent pills: individual styled pills for LangChain, CrewAI, Claude, VS Code, Copilot Studio, Cursor (was text list)
+- "ONE URL · ONE API KEY" pill: now pulses with coral glow animation
+- MCP Gateway box: expanded from 3 to 7 capability pills (Auth, Route, Audit, Rate Limit, Telemetry, RBAC, Playground) with gradient border and inner glow
+- Bottom pillar cards: glassmorphic cards with real example tags and "+N more" counters (was icon + label only)
+- Connectors: SVG paths with flowing particle dots (was static gradient divs)
+- Entrance: staggered top-down reveal animation (was single fade-in)
+- Chart width: max-w-3xl → max-w-4xl
+- Mobile: SVG fan-out hidden, replaced with simple vertical connector
 
 ## 2026-02-23 — Pillar Pages (feat/pillar-pages)
 
