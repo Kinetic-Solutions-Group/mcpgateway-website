@@ -88,9 +88,9 @@ function ScreenshotSection(): React.ReactNode {
   return (
     <section className="py-16 px-6">
       <ProductScreenshot
-        src="/screenshots/servers-list.svg"
+        src="/images/servers-list.png"
         alt="MCP Gateway — Servers Dashboard"
-        caption="Manage all your MCP server connections from one dashboard"
+        caption="Servers list with live status, tool counts, and connection details"
         priority
       />
     </section>
@@ -132,8 +132,8 @@ function HowItWorks(): React.ReactNode {
             index={0}
           >
             <ProductScreenshot
-              src="/screenshots/servers-add.svg"
-              alt="Add Server — Type Selection"
+              src="/images/catalog-servers.png"
+              alt="MCP Servers Catalog — curated and community servers with one-click import"
             />
           </FeatureBlock>
 
