@@ -3,7 +3,6 @@ import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { source } from "@/lib/source";
 import Image from "next/image";
 import Link from "next/link";
-import "fumadocs-openapi/css/preset.css";
 
 export default function Layout({
   children,

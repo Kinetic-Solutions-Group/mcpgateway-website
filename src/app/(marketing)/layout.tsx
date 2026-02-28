@@ -8,10 +8,10 @@ export default function MarketingLayout({
   children: ReactNode;
 }): ReactNode {
   return (
-    <>
+    <div data-marketing="">
       <Navbar />
       <main>{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }

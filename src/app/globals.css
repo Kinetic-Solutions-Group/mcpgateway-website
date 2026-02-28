@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+@import "fumadocs-openapi/css/preset.css";
+
+@source '../node_modules/fumadocs-ui/dist/**/*.js';
 
 @plugin "@tailwindcss/typography";
 
@@ -195,15 +200,16 @@
     @apply bg-background text-foreground;
   }
 
-  /* Fluid typography — Bebas Neue for display, Inter for body */
-  h1 {
+  /* Fluid typography — Bebas Neue for display, Inter for body
+     Scoped to marketing pages only via [data-marketing] wrapper */
+  [data-marketing] h1 {
     font-size: clamp(2rem, 1.5rem + 4vw, 5.5rem);
     line-height: 1;
     letter-spacing: 0.02em;
     text-wrap: balance;
   }
 
-  h2 {
+  [data-marketing] h2 {
     @apply font-display;
     font-size: clamp(2rem, 1.25rem + 2.5vw, 3.5rem);
     line-height: 1;
@@ -212,7 +218,7 @@
     text-wrap: balance;
   }
 
-  h3 {
+  [data-marketing] h3 {
     font-size: clamp(1.25rem, 1rem + 0.75vw, 1.5rem);
     line-height: 1.25;
     letter-spacing: -0.02em;
