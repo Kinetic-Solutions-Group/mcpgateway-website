@@ -227,16 +227,51 @@
   color: oklch(0.72 0.15 40);
 }
 
-/* Docs page title — use Inter (body font), not Bebas Neue */
+/* Docs page title — Bebas Neue display font, matching marketing h2 style */
 #nd-docs-layout h1 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
-/* Sidebar — tighter, cleaner, branded */
+/* Content h2 — Inter bold, tight tracking, for section headings */
+#nd-docs-layout .prose h2 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.375rem;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+
+/* Content h3 — Inter semibold */
+#nd-docs-layout .prose h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1.125rem;
+  letter-spacing: -0.01em;
+}
+
+/* Sidebar — tighter, cleaner */
 #nd-sidebar {
   font-size: 0.875rem;
+}
+
+/* Sidebar category labels — uppercase with tracking for premium feel */
+#nd-sidebar [data-type="folder"] > button > span:first-child,
+#nd-sidebar [role="treeitem"] > button {
+  letter-spacing: 0.03em;
+}
+
+/* Breadcrumb — monospace for dev-tool aesthetic */
+#nd-docs-layout nav[aria-label="breadcrumb"],
+#nd-docs-layout [class*="breadcrumb"] {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 /* Code blocks — subtle border for definition */
