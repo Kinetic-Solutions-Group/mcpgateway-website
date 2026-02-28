@@ -11,6 +11,9 @@ importers:
       '@react-three/fiber':
         specifier: ^9.5.0
         version: 9.5.0(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(three@0.183.1)
+      '@scalar/nextjs-api-reference':
+        specifier: ^0.9.24
+        version: 0.9.24(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@4.2.0)
@@ -1571,6 +1574,10 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
+  '@scalar/core@0.3.43':
+    resolution: {integrity: sha512-id97ufmbFPXCGKLizx0pATqeVm0hJk6WVLX1IUPYZJBTvo4Bq4u/hUGeWZtdn+Drgc11zMkGHL3LADulgFFyNA==}
+    engines: {node: '>=20'}
+
   '@scalar/helpers@0.2.16':
     resolution: {integrity: sha512-JlDUKdmwAHdcFUdTngNtx/uhLKTBACXlgvri7iKb6Jx6ImRIBgHwxZNAqlil1L047+QBrKh97lnezNpzNQAffQ==}
     engines: {node: '>=20'}
@@ -1578,6 +1585,13 @@ packages:
   '@scalar/json-magic@0.11.5':
     resolution: {integrity: sha512-WhNsLzjaCwa0hdYVezHnNmlOkX8PMPbyljeBfHtkmxMSf8W5Ht1LePQzfWzMc9SFwN6n7LcR4XVQvUwwNIyUUg==}
     engines: {node: '>=20'}
+
+  '@scalar/nextjs-api-reference@0.9.24':
+    resolution: {integrity: sha512-MenqQyuicw5rhKHt5sglyLVbqdNuI2ZAS6ZhecaZdG0MLkB/srV7jJGRM7nMeP4BnBbLzxkXrS9u5tyrPO1zHQ==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      next: ^15.0.0 || ^16.0.0
+      react: ^19.0.0
 
   '@scalar/openapi-parser@0.24.14':
     resolution: {integrity: sha512-C3PBhS1TNJY+nCoUnrLiyKgLIty9Iu0QVvj2XhU0uMFJNwtMS18xdvTiQ1Svtu2YZF08T6K9UPbViBKwSMFcbg==}
@@ -1593,6 +1607,10 @@ packages:
 
   '@scalar/openapi-upgrader@0.1.9':
     resolution: {integrity: sha512-mT1ijLfoTuQck3bnlTiVk+Efmol1EYoY/qHNTtkoiZbxSAlgO6BGV8l4Z409WPRh2sZ7LvUP/T1TOI/CqVRksA==}
+    engines: {node: '>=20'}
+
+  '@scalar/types@0.6.8':
+    resolution: {integrity: sha512-24AwoTKOggB+VNY65yIuSXwE5/kwjplqrx4v+VYuRBtIMVt3I+Ppaz45Xk3QoDirNCGtraNRpAbfArLRlFcP/w==}
     engines: {node: '>=20'}
 
   '@sec-ant/readable-stream@0.4.1':
@@ -3862,6 +3880,11 @@ packages:
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
+  nanoid@5.1.6:
+    resolution: {integrity: sha512-c7+7RQ+dMB5dPwwCp4ee1/iV/q2P6aK1mTZcfr1BTuVlyW9hJYiMPybJCcnBlQtuSmTIWNeazm/zqNoZSSElBg==}
+    engines: {node: ^18 || >=20}
     hasBin: true
 
   napi-postinstall@0.3.4:
@@ -6382,6 +6405,10 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
+  '@scalar/core@0.3.43':
+    dependencies:
+      '@scalar/types': 0.6.8
+
   '@scalar/helpers@0.2.16': {}
 
   '@scalar/json-magic@0.11.5':
@@ -6389,6 +6416,12 @@ snapshots:
       '@scalar/helpers': 0.2.16
       pathe: 2.0.3
       yaml: 2.8.2
+
+  '@scalar/nextjs-api-reference@0.9.24(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      '@scalar/core': 0.3.43
+      next: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react: 19.2.3
 
   '@scalar/openapi-parser@0.24.14':
     dependencies:
@@ -6414,6 +6447,13 @@ snapshots:
   '@scalar/openapi-upgrader@0.1.9':
     dependencies:
       '@scalar/openapi-types': 0.5.3
+
+  '@scalar/types@0.6.8':
+    dependencies:
+      '@scalar/helpers': 0.2.16
+      nanoid: 5.1.6
+      type-fest: 5.4.4
+      zod: 4.3.6
 
   '@sec-ant/readable-stream@0.4.1': {}
 
@@ -9120,6 +9160,8 @@ snapshots:
   mute-stream@2.0.0: {}
 
   nanoid@3.3.11: {}
+
+  nanoid@5.1.6: {}
 
   napi-postinstall@0.3.4: {}
 
