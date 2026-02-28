@@ -1,16 +1,9 @@
 "use client";
 
-import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 
 export function Providers({ children }: { children: ReactNode }): ReactNode {
-  return (
-    <ThemeProvider
-      attribute="class"
-      forcedTheme="dark"
-      disableTransitionOnChange
-    >
-      {children}
-    </ThemeProvider>
-  );
+  // ThemeProvider removed — Fumadocs RootProvider (in src/app/layout.tsx) owns theming.
+  // Add other client-side providers here (e.g., React Query) if needed.
+  return <>{children}</>;
 }

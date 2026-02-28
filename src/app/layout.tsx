@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { RootProvider } from "fumadocs-ui/provider/next";
 
 import { inter, geistMono, bebasNeue } from "@/lib/fonts";
 import { baseMetadata } from "@/lib/metadata";
@@ -20,7 +21,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${geistMono.variable} ${bebasNeue.variable} font-sans antialiased`}
       >
-        <Providers>{children}</Providers>
+        <RootProvider theme={{ forcedTheme: "dark", attribute: "class" }}>
+          <Providers>{children}</Providers>
+        </RootProvider>
         <Analytics />
         <SpeedInsights />
       </body>
