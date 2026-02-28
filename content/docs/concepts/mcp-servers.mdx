@@ -1,0 +1,81 @@
+---
+title: MCP Servers
+description: How MCP Gateway connects to, manages, and routes requests across multiple MCP server types.
+---
+
+## Overview
+
+An MCP server is any service that exposes tools, resources, or prompts via the Model Context Protocol. MCP Gateway acts as a centralized hub that connects to multiple MCP servers simultaneously, regardless of how they are hosted or deployed.
+
+Instead of configuring each AI agent to connect to each MCP server individually, you register servers with the gateway once. The gateway then aggregates all tools into a unified catalog, handles authentication and connection management, and routes tool calls to the correct server.
+
+This design solves several problems: agents no longer need to manage multiple connections, server credentials are centralized and encrypted, connection pools are shared across requests, and every tool call passes through a consistent audit and observability pipeline.
+
+## Server Types
+
+MCP Gateway supports six server types to cover every deployment scenario:
+
+### Remote
+
+External MCP servers accessible over HTTP/SSE. These are always-running services hosted externally — third-party APIs, cloud-hosted MCP servers, or self-hosted servers on your network. The gateway connects using the Streamable HTTP transport with HTTP/2 connection pooling.
+
+### NPX
+
+Node.js MCP servers installed and run via `npx`. The gateway spawns the process on demand using stdio transport (stdin/stdout communication). This covers the entire npm ecosystem of MCP server packages.
+
+### UVX
+
+Python MCP servers installed and run via `uvx`. Like NPX servers, these are spawned on demand with stdio transport, covering PyPI-hosted MCP server packages.
+
+### Container
+
+Docker containers running MCP servers as sidecars. These are always-running containers with full isolation, useful for servers with complex dependencies or strict security requirements. The gateway manages the container lifecycle and supports both stdio and HTTP transports.
+
+### Generated
+
+AI-created MCP servers built from API documentation. When you provide an API spec (OpenAPI, documentation URL, or plain text), MCP Gateway's AI generation pipeline creates a working FastMCP server and loads it **in-process** — no container, no subprocess. This is actually the most efficient runtime: tool execution is a direct function call with zero IPC overhead.
+
+### Bundle
+
+A logical grouping of multiple servers presented as a single unit. Bundles aggregate tools from their member servers with namespaced tool names (`BUNDLE__SERVER__tool_name`), making it easy to organize related functionality.
+
+## How It Works
+
+### Registration
+
+Servers are registered via the REST API or the web UI. Each registration includes the server type, connection details (URL, package name, Docker image, etc.), and optional configuration like environment variables, authentication credentials, and resource limits.
+
+Once registered, the gateway connects to the server, discovers its tools, and adds them to the aggregated tool catalog. Tool definitions are cached for fast lookup.
+
+### Runtime Adapters
+
+The gateway uses the **adapter pattern** to normalize all server types behind a unified interface. Each server type has a dedicated adapter that handles connection, tool listing, tool execution, and disconnection. This means the rest of the system — routing, caching, session management, observability — works identically regardless of the underlying server type.
+
+### Tool Routing
+
+When an agent calls a tool, the gateway resolves which server owns that tool and routes the request through the appropriate adapter. In SEARCH_EXECUTE mode, the agent first searches for tools by keyword, then executes a specific tool by name — the gateway handles the routing transparently.
+
+### Connection Pooling
+
+For remote servers, the gateway maintains HTTP/2 connection pools with configurable limits. Pools use LRU eviction when the maximum count is reached. HTTP/2 multiplexing allows multiple concurrent requests over a single connection, significantly reducing latency and resource usage compared to HTTP/1.1.
+
+### Session Management
+
+The gateway tracks sessions using the `Mcp-Session-Id` header (per the MCP specification). Each session records which servers were accessed and maintains per-server external session state, enabling stateful conversations where agents maintain context across multiple tool calls.
+
+## Key Features
+
+- **Six server types** covering remote, Node.js, Python, Docker, AI-generated, and bundled servers
+- **Automatic tool discovery** — the gateway connects to each server and discovers available tools
+- **Connection pooling** with HTTP/2 multiplexing and LRU eviction
+- **Stateful sessions** with per-server external session tracking
+- **Encrypted credentials** — server authentication details (API keys, OAuth tokens) are encrypted at rest with AES-256-GCM
+- **Health monitoring** — server status tracking with connection validation
+- **On-demand lifecycle** — NPX and UVX servers are started only when needed and stopped when idle
+- **In-process execution** — generated servers run as direct function calls for zero-overhead tool execution
+
+## API Reference
+
+- [List servers](/docs/api/servers) — retrieve all registered MCP servers
+- [Register a server](/docs/api/servers) — add a new MCP server to the gateway
+- [Server details](/docs/api/servers) — get configuration, tools, and status for a specific server

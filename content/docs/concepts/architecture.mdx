@@ -1,0 +1,56 @@
+---
+title: Architecture
+description: High-level overview of MCP Gateway's system architecture and core design principles.
+---
+
+## Overview
+
+MCP Gateway is a **unified gateway** that sits between AI agents and multiple MCP (Model Context Protocol) servers. Instead of connecting agents to each MCP server individually, MCP Gateway provides a single endpoint that aggregates tools from all registered servers, handles authentication, manages connections, and provides observability across every tool call.
+
+The gateway is designed for production use. It supports multiple server types (remote HTTP, Node.js packages, Python packages, Docker containers, AI-generated servers, and bundles), manages connection pools with HTTP/2 multiplexing, maintains stateful sessions across tool calls, and exports telemetry to your existing observability stack.
+
+MCP Gateway follows an **API-first, AI-first** philosophy. Users describe what they want and agents build it for them — from generating MCP servers from API documentation to creating reusable skill packages from plain-text intents. The web UI and API work together, with every UI action backed by a REST endpoint.
+
+## How It Works
+
+At the highest level, MCP Gateway sits in the middle of the AI tool-use flow:
+
+1. **AI agents** (Claude, GPT-4, Cursor, VS Code, custom agents) connect to the gateway via a single MCP endpoint
+2. **The gateway** aggregates tools from all registered MCP servers, authenticates requests, routes tool calls, and records audit logs
+3. **MCP servers** (remote, managed, or generated) execute tools and return results through the gateway back to the agent
+
+The gateway exposes three **interface modes** to control how tools are presented to agents:
+
+- **LIST mode** returns all tool definitions directly — ideal when the total tool count is small enough for the agent's context window
+- **SEARCH_EXECUTE mode** returns two meta-tools (`SEARCH_TOOLS` and `EXECUTE_TOOL`) that let the agent discover and invoke tools on demand — ideal for large tool catalogs
+- **AUTO mode** switches between LIST and SEARCH_EXECUTE automatically based on a configurable tool count threshold
+
+Internally, the gateway uses a **layered architecture**:
+
+- **API layer** — FastAPI routes for REST endpoints and the MCP protocol handler
+- **Service layer** — business logic for servers, skills, sandboxes, sessions, and observability
+- **Repository layer** — database operations with SQLAlchemy 2.0
+- **Runtime adapter layer** — adapter pattern that normalizes different server types (remote, package, Docker, generated, bundle) behind a single interface
+- **Data layer** — PostgreSQL for persistent state, optional Redis for caching
+
+## Key Features
+
+- **Unified MCP endpoint** — agents connect to one URL and access tools from all registered servers
+- **Six server types** — remote HTTP/SSE, NPX (Node.js), UVX (Python), Docker containers, AI-generated (in-process FastMCP), and bundles (grouped servers)
+- **Dual authentication** — OAuth for web UI (GitHub, Google, Microsoft Entra, Okta) and API keys for programmatic access, both resolving to the same user identity
+- **Role-based access control** — Owner, Admin, and Member roles with hierarchical permissions
+- **Connection pooling** — HTTP/2 multiplexing with LRU eviction for efficient resource use
+- **Session management** — stateful conversations with per-server external session tracking
+- **AI-powered generation** — create MCP servers from API documentation and skill packages from plain-text intents
+- **Persistent sandboxes** — isolated container environments with warm pools for sub-second allocation
+- **Full observability** — OpenTelemetry traces (push to Datadog, Azure, AWS, etc.), Prometheus metrics (pull), and structured audit logs in PostgreSQL
+- **Skills system** — reusable instruction packages following the agentskills.io specification that teach agents how to use tools effectively
+- **Interactive playground** — browser-based agent chat for testing tools and skills in real time
+- **Kubernetes-native** — Helm chart deployment with PVCs, CRDs for sandbox warm pools, and horizontal scaling
+
+## API Reference
+
+- [Servers API](/docs/api/servers) — register, list, and manage MCP servers
+- [Skills API](/docs/api/skills) — create, import, and manage skill packages
+- [Sandboxes API](/docs/api/sandboxes) — provision and manage isolated execution environments
+- [Authentication API](/docs/api/authentication) — OAuth flows and API key management

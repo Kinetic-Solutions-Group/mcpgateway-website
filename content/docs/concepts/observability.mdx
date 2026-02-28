@@ -1,0 +1,92 @@
+---
+title: Observability
+description: Distributed tracing, Prometheus metrics, and structured audit logs for monitoring MCP Gateway.
+---
+
+## Overview
+
+MCP Gateway has three monitoring pillars that together provide complete visibility into what the system is doing, how it is performing, and what happened in the past.
+
+**Telemetry (traces)** captures distributed traces — structured records of the full call chain for each request, from the HTTP endpoint through database queries to MCP tool invocations. Traces are pushed to an external observability platform via OpenTelemetry (OTLP).
+
+**Metrics** exposes numeric counters, gauges, and histograms in Prometheus format. An external scraper periodically fetches this data from the `/api/v1/metrics` endpoint.
+
+**Logs** records structured request logs and a full audit trail of every MCP tool call, stored in PostgreSQL with automatic secret masking and configurable retention.
+
+These pillars are complementary: traces show you the _story_ of individual requests, metrics show you _aggregate trends_, and logs provide a _permanent audit trail_ for compliance and debugging.
+
+## How It Works
+
+### Distributed Tracing
+
+At startup, OpenTelemetry auto-instruments four libraries. No tracing code is needed in application logic — spans are created automatically:
+
+- **FastAPI** — every HTTP request (method, path, status, duration)
+- **SQLAlchemy** — every database query (query text, duration)
+- **HTTPX** — every outgoing HTTP call to MCP servers
+- **Python logging** — trace context (`trace_id`, `span_id`) is injected into every log line
+
+MCP tool calls receive additional custom tracing via a decorator that adds `mcp.server`, `mcp.tool`, and `mcp.status` attributes to each span. This means you can filter traces by server name or tool name in your observability platform.
+
+### Hot-Reloadable Export
+
+The key architectural feature is a **ConfigurableSpanExporter** that allows swapping the underlying trace exporter at runtime without restarting the application. When an admin changes the telemetry provider in the Settings UI, the new exporter is created and swapped in via a thread-safe lock — zero downtime, no restart needed.
+
+### Supported Providers
+
+MCP Gateway supports eight telemetry providers out of the box:
+
+| Provider | Protocol | Auth Method |
+|---|---|---|
+| Datadog | gRPC | `DD-API-KEY` header |
+| Azure Application Insights | HTTP | Connection string |
+| AWS CloudWatch | gRPC (via collector sidecar) | SigV4 |
+| Google Cloud Operations | gRPC | Service account / ADC |
+| Grafana Cloud | gRPC | Basic auth |
+| New Relic | HTTP | `api-key` header |
+| Splunk | gRPC | `X-SF-Token` header |
+| Custom OTLP | gRPC or HTTP | Configurable headers |
+
+All provider credentials are encrypted at rest using AES-256-GCM. The API never returns actual credential values — only boolean flags indicating whether credentials are configured.
+
+### Prometheus Metrics
+
+The metrics endpoint (`GET /api/v1/metrics`) exposes data in Prometheus text format. Three categories of metrics are collected:
+
+**HTTP metrics** (automatic) — `http_requests_total` (counter by method, endpoint, status) and `http_request_duration_seconds` (histogram with latency buckets from 10ms to 10s). URL paths are normalized to replace UUIDs with `:id` to prevent high-cardinality metrics.
+
+**Business metrics** (from tool calls) — `tool_calls_total` and `tool_latency_seconds` per server and tool, `server_status` gauge, `tokens_total` for LLM usage tracking, `active_connections` per server, and `errors_total` by category.
+
+**Process metrics** (automatic) — CPU time, memory usage, open file descriptors, garbage collector stats, and Python version.
+
+### Audit Logging
+
+Every MCP tool call is recorded in the `tool_call_logs` table by the AuditLogger service. Before storage, the logger:
+
+1. **Masks secrets** in arguments and responses — API keys, tokens, and passwords are replaced with `***`
+2. **Records Prometheus metrics** — increments counters and observes latency histograms
+3. **Stores the log** in PostgreSQL with the server name, tool name, masked arguments, masked response, latency, and status
+
+Log retention is configurable (default 90 days). The Settings UI provides a preview of how many logs would be deleted before running cleanup.
+
+### Request Correlation
+
+Every HTTP request is assigned a unique `X-Request-ID` header. OpenTelemetry's logging instrumentor injects `trace_id` and `span_id` into every log line. This means you can click a trace in Datadog and see the associated logs, or search logs by trace ID to find the corresponding distributed trace.
+
+## Key Features
+
+- **Auto-instrumented tracing** — FastAPI, SQLAlchemy, HTTPX, and Python logging are traced automatically with zero application code
+- **Custom MCP tool spans** — tool calls are traced with server name, tool name, and status attributes
+- **Eight telemetry providers** — Datadog, Azure, AWS, Google Cloud, Grafana, New Relic, Splunk, and custom OTLP
+- **Hot-reload configuration** — change telemetry provider without restarting the application
+- **Prometheus metrics** — HTTP request counts/latency, tool call counts/latency, server status, token usage, and process metrics
+- **Full audit trail** — every tool call logged to PostgreSQL with automatic secret masking
+- **Configurable retention** — set how long audit logs are kept, with dry-run preview before cleanup
+- **Encrypted credentials** — all provider secrets encrypted at rest with AES-256-GCM
+- **Request correlation** — trace IDs in logs enable cross-referencing between traces and log entries
+- **Settings UI** — configure telemetry export, metrics endpoint, and log retention from the web interface
+
+## API Reference
+
+- [Metrics endpoint](/docs/api/observability) — Prometheus-compatible metrics scrape endpoint
+- [Observability settings](/docs/api/observability) — configure telemetry providers and log retention

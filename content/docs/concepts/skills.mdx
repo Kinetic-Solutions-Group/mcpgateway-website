@@ -1,0 +1,76 @@
+---
+title: Skills
+description: Reusable instruction packages that teach AI agents how to use MCP tools effectively.
+---
+
+## Overview
+
+Agent Skills are reusable, portable instruction packages that teach AI agents how to use MCP server tools effectively. Think of them as "recipes" that guide agents through complex workflows using the tools available to them.
+
+MCP servers expose tools with basic descriptions, but agents often lack the context to use them well. They may not know _when_ to use each tool, how tools should be _combined_ into workflows, or what best practices and edge cases to watch for. Skills fill this gap by providing structured instructions, examples, and domain context that turn a generic tool catalog into guided, reliable automation.
+
+Skills follow the [agentskills.io](https://agentskills.io) open specification, ensuring portability across systems. Each skill is a ZIP package with a `SKILL.md` file at its root containing YAML frontmatter (metadata) and markdown instructions.
+
+## How It Works
+
+### Skill Structure
+
+A skill package follows a standard structure:
+
+```
+my-skill.skill/
+  SKILL.md           # Required - Main instruction file
+  scripts/           # Optional - Helper scripts
+  references/        # Optional - External documentation
+  assets/            # Optional - Static files
+```
+
+The `SKILL.md` file uses YAML frontmatter for metadata (name, description, author, version, tags, allowed tools) followed by markdown content with instructions for the agent.
+
+### Progressive Disclosure
+
+Skills are designed for efficient token usage. The metadata layer (~100 tokens) is used for filtering and search. The full instructions (under 5K tokens) provide the agent context. Additional scripts and assets are loaded on demand. This ensures agents get relevant context without overwhelming their context window.
+
+### Three Entry Paths
+
+Skills enter MCP Gateway through three paths:
+
+**Import from catalog** — Browse and import skills from external catalogs like GitHub repositories or the skills.sh marketplace. The gateway fetches the skill package, validates it, and stores it locally.
+
+**AI generation** — Describe what you want in plain text and an AI deep agent creates a complete skill package. The agent operates in a sandboxed workspace with path-validated file operations, streams real-time progress events via SSE, and packages the result automatically.
+
+**Manual upload** — Upload `.zip`, `.skill`, or `.md` files directly. The gateway validates the package structure, checks that frontmatter follows the specification, and stores the skill.
+
+### Validation
+
+Every skill is validated against the agentskills.io specification before storage:
+
+- Name must be lowercase-hyphenated (max 64 characters)
+- Description must not exceed 1024 characters
+- YAML frontmatter must include required fields
+- ZIP packages must contain `SKILL.md` at the root or in a single subdirectory
+
+### Server Linking
+
+Skills can optionally be linked to specific MCP servers they are designed for. When linked, the skill's tool references can be validated against the server's actual tool catalog, and the web UI shows the association for easier discovery.
+
+## Key Features
+
+- **Open standard** — follows the agentskills.io specification for cross-platform portability
+- **Three entry paths** — import from catalogs, generate with AI, or upload manually
+- **AI-powered generation** — describe your intent in plain text and a deep agent creates the skill with real-time streaming progress
+- **Catalog integration** — browse and import skills from GitHub repositories and skills.sh
+- **Starter templates** — pre-built templates for common patterns (API integration, data analysis, workflow automation, code generation)
+- **Portal publishing** — skills can be published to the customer portal with categories, tags, and download tracking for team discovery
+- **Server linking** — associate skills with specific MCP servers for tool validation and easier navigation
+- **Secure generation** — AI agent workspace is sandboxed with path traversal prevention, YAML safe loading, and filename sanitization
+- **Package size limits** — 10MB maximum with a 100-file cap to prevent abuse
+
+## API Reference
+
+- [List skills](/docs/api/skills) — retrieve all skills with pagination and filtering
+- [Create a skill](/docs/api/skills) — create a skill from generated content
+- [Upload a skill](/docs/api/skills) — upload a `.zip`, `.skill`, or `.md` file
+- [Generate a skill](/docs/api/skills) — AI-generate a skill from a plain-text intent (SSE streaming)
+- [Browse catalogs](/docs/api/skills) — list available skills from external catalogs
+- [Import from catalog](/docs/api/skills) — import a skill from GitHub or skills.sh
