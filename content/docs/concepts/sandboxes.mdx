@@ -1,15 +1,26 @@
 ---
 title: Sandboxes
-description: Isolated container environments for secure code execution with persistent volumes and warm pools.
+description: The computer — isolated container environments where agents execute code, run skill scripts, and produce artifacts.
 ---
 
 ## Overview
 
-Persistent sandboxes are isolated container environments where AI agents execute code, install packages, and manipulate files. Each sandbox has a persistent volume that survives stop/resume cycles, giving agents stateful workspaces across conversations.
+MCP servers give agents **tools** (the actions). Skills give agents **knowledge** (how to use those tools). Sandboxes give agents a **computer** — a safe, isolated environment to execute code, install packages, and produce file artifacts.
 
-Agents need to run code, but arbitrary execution on the host is a security risk. Agents also lose context between tool calls without persistent filesystems, cold-starting a container per request is too slow (5-30 seconds), and multiple agents for the same user should not create duplicate environments. Sandboxes solve all four problems: isolated execution, persistent volumes, warm pool prewarming, and session affinity.
+This is the third pillar of MCP Gateway, and it completes the agent runtime. In the [Agent + Skills + Computer](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) model, the sandbox is the agent's virtual machine — it has Bash, Python, Node.js, a persistent filesystem where skill directories live, and resource limits that prevent runaway execution.
 
-## How It Works
+### Why Agents Need a Computer
+
+Agents need to run code, but:
+
+- Arbitrary code execution on the host is a **security risk**
+- Agents lose context between tool calls without **persistent filesystems**
+- Cold-starting a container per request is **too slow** (5-30 seconds)
+- Multiple agents for the same user should **not create duplicate environments**
+
+Sandboxes solve all four problems: container isolation, persistent volumes, warm pool prewarming, and session affinity.
+
+## How Sandboxes Work
 
 ### Lifecycle
 
@@ -17,12 +28,12 @@ Every sandbox follows a state machine:
 
 1. **Creating** — container is being provisioned with the requested image, resource limits, and volume
 2. **Running** — sandbox is active and ready for command execution, file operations, and package installation
-3. **Stopped** — sandbox is idle (either manually stopped or auto-stopped after the idle timeout). The persistent volume is preserved.
+3. **Stopped** — sandbox is idle (auto-stopped after the configurable idle timeout). The persistent volume is preserved.
 4. **Destroyed** — sandbox is permanently deleted after exceeding the stopped retention period. The volume is removed.
 
-The transition from Running to Stopped happens automatically when a sandbox has been idle for longer than the configurable idle timeout. The transition from Stopped to Destroyed happens when the stopped retention period expires. Both thresholds are managed by a background lifecycle manager.
+The transitions are managed automatically by a background lifecycle manager — no manual intervention needed.
 
-### Providers
+### Three Providers
 
 MCP Gateway supports three sandbox providers, selected at deployment time:
 
@@ -30,24 +41,47 @@ MCP Gateway supports three sandbox providers, selected at deployment time:
 
 **Kubernetes (production fallback)** — uses the Kubernetes async client to create Pods and PersistentVolumeClaims directly. Every create is a cold start (no warm pool).
 
-**Agent Sandbox (production preferred)** — uses [kubernetes-sigs/agent-sandbox](https://github.com/kubernetes-sigs/agent-sandbox) CRDs for production-grade warm pool management. A `SandboxTemplate` defines the container spec, a `SandboxWarmPool` maintains N idle replicas, and a `SandboxClaim` atomically allocates from the pool for sub-second sandbox provisioning.
+**Agent Sandbox CRDs (production preferred)** — uses [kubernetes-sigs/agent-sandbox](https://github.com/kubernetes-sigs/agent-sandbox) CRDs for production-grade warm pool management. A `SandboxTemplate` defines the container spec, a `SandboxWarmPool` maintains N idle replicas, and a `SandboxClaim` atomically allocates from the pool for sub-second provisioning.
 
 ### Warm Pools
 
-Warm pools pre-create containers so that when a user requests a sandbox, one is allocated instantly instead of waiting for a cold start. The pool continuously replenishes to maintain the target count of idle containers.
+Warm pools pre-create containers so that when an agent requests a sandbox, one is allocated instantly instead of waiting 5-30 seconds for a cold start. The pool continuously replenishes to maintain the target count of idle containers.
 
-In development (Docker), the `DockerWarmPool` service manages a pool of pre-created containers labeled for warm pool tracking. In production (Agent Sandbox), the Kubernetes CRD controller handles pool management natively.
+In development (Docker), the `DockerWarmPool` service manages a pool of pre-created containers. In production (Agent Sandbox), the Kubernetes CRD controller handles pool management natively.
 
 ### Session Affinity
 
 When a sandbox is requested with a session key, the gateway first checks if an existing sandbox is already assigned to that session. If so, the same sandbox is returned — preventing duplicate environments for the same user or conversation. This is critical for the playground experience where agents interact with the same workspace across multiple turns.
 
+### How Sandboxes Connect to Skills
+
+Skill directories and their bundled resources live in the sandbox filesystem:
+
+```
+/workspace/
+  skills/
+    bigquery/
+      SKILL.md
+      datasources.md
+      rules.md
+    pdf/
+      SKILL.md
+      forms.md
+      reference.md
+      scripts/
+        extract_fields.py    # Runs inside the sandbox
+  outputs/
+    chart.png                # Agent-generated artifacts
+```
+
+When a skill's instructions reference a bundled script (`extract_fields.py`), the agent executes it inside the sandbox via a tool call. The script code never enters the agent's context window — only the output does. This is how progressive disclosure works at the execution level.
+
 ### File Operations
 
 Sandboxes support full filesystem operations through the API:
 
-- **Upload files** — push files into the sandbox workspace
-- **Download files** — retrieve files from the sandbox
+- **Upload files** — push data files, scripts, or configurations into the sandbox
+- **Download files** — retrieve agent-generated artifacts (charts, reports, processed data)
 - **List files** — browse the sandbox filesystem
 - **Execute commands** — run shell commands with configurable timeouts
 
@@ -61,7 +95,7 @@ All file paths are validated to prevent path traversal attacks.
 - **Session affinity** — same session key reuses the same sandbox, preventing duplicates
 - **Network isolation** — network is disabled by default; can be enabled per sandbox
 - **Automatic lifecycle** — idle sandboxes are stopped automatically, stopped sandboxes are destroyed after retention period
-- **Custom images** — admin-managed sandbox images with build pipeline and approval workflow
+- **Custom images** — admin-managed sandbox images with pre-installed packages (Python, Node, multi-lang)
 - **Quota enforcement** — per-user limits on concurrent sandboxes and resource consumption
 - **Three providers** — Docker for development, Kubernetes and Agent Sandbox CRDs for production
 - **Background management** — lifecycle manager handles auto-stop, archive, destroy, and warm pool replenishment

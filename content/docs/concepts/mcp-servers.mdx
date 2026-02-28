@@ -1,15 +1,15 @@
 ---
 title: MCP Servers
-description: How MCP Gateway connects to, manages, and routes requests across multiple MCP server types.
+description: The tools — how MCP Gateway connects agents to any API through six server types and a unified gateway endpoint.
 ---
 
 ## Overview
 
-An MCP server is any service that exposes tools, resources, or prompts via the Model Context Protocol. MCP Gateway acts as a centralized hub that connects to multiple MCP servers simultaneously, regardless of how they are hosted or deployed.
+MCP servers are the first pillar of MCP Gateway — **the tools**. Each MCP server exposes tools (functions) that connect to external systems: GitHub, Slack, databases, internal APIs, cloud services. An agent equipped with MCP servers can take action in the real world.
 
-Instead of configuring each AI agent to connect to each MCP server individually, you register servers with the gateway once. The gateway then aggregates all tools into a unified catalog, handles authentication and connection management, and routes tool calls to the correct server.
+Instead of configuring each AI agent to connect to each MCP server individually, you register servers with the gateway once. The gateway aggregates all tools into a unified catalog, handles authentication and connection management, routes tool calls to the correct server, and records everything through the [observability pipeline](/docs/concepts/observability).
 
-This design solves several problems: agents no longer need to manage multiple connections, server credentials are centralized and encrypted, connection pools are shared across requests, and every tool call passes through a consistent audit and observability pipeline.
+This design solves several problems: agents no longer need to manage multiple connections, server credentials are centralized and encrypted, connection pools are shared across requests, and every tool call passes through a consistent audit pipeline.
 
 ## Server Types
 
@@ -21,7 +21,7 @@ External MCP servers accessible over HTTP/SSE. These are always-running services
 
 ### NPX
 
-Node.js MCP servers installed and run via `npx`. The gateway spawns the process on demand using stdio transport (stdin/stdout communication). This covers the entire npm ecosystem of MCP server packages.
+Node.js MCP servers installed and run via `npx`. The gateway spawns the process on demand using stdio transport (stdin/stdout). This covers the entire npm ecosystem of MCP server packages.
 
 ### UVX
 
@@ -29,11 +29,11 @@ Python MCP servers installed and run via `uvx`. Like NPX servers, these are spaw
 
 ### Container
 
-Docker containers running MCP servers as sidecars. These are always-running containers with full isolation, useful for servers with complex dependencies or strict security requirements. The gateway manages the container lifecycle and supports both stdio and HTTP transports.
+Docker containers running MCP servers as sidecars. Full isolation, useful for servers with complex dependencies or strict security requirements. The gateway manages the container lifecycle and supports both stdio and HTTP transports.
 
 ### Generated
 
-AI-created MCP servers built from API documentation. When you provide an API spec (OpenAPI, documentation URL, or plain text), MCP Gateway's AI generation pipeline creates a working FastMCP server and loads it **in-process** — no container, no subprocess. This is actually the most efficient runtime: tool execution is a direct function call with zero IPC overhead.
+AI-created MCP servers built from API documentation. When you provide an API spec (OpenAPI, documentation URL, or plain text), MCP Gateway's AI generation pipeline creates a working FastMCP server and loads it **in-process** — no container, no subprocess. This is the most efficient runtime: tool execution is a direct function call with zero IPC overhead.
 
 ### Bundle
 
@@ -45,15 +45,31 @@ A logical grouping of multiple servers presented as a single unit. Bundles aggre
 
 Servers are registered via the REST API or the web UI. Each registration includes the server type, connection details (URL, package name, Docker image, etc.), and optional configuration like environment variables, authentication credentials, and resource limits.
 
-Once registered, the gateway connects to the server, discovers its tools, and adds them to the aggregated tool catalog. Tool definitions are cached for fast lookup.
+Once registered, the gateway connects to the server, discovers its tools, and adds them to the aggregated tool catalog.
 
 ### Runtime Adapters
 
 The gateway uses the **adapter pattern** to normalize all server types behind a unified interface. Each server type has a dedicated adapter that handles connection, tool listing, tool execution, and disconnection. This means the rest of the system — routing, caching, session management, observability — works identically regardless of the underlying server type.
 
+### Gateway Modes — Progressive Tool Loading
+
+The biggest challenge in production AI tooling is **context engineering**: giving the agent exactly the right tools at the right time without overwhelming its context window. [Anthropic's research](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool) shows that tool selection accuracy degrades significantly past 30-50 tools. A typical setup with 5 MCP servers exposes 150+ tools, consuming 55,000+ tokens in tool definitions alone — before the agent does any work.
+
+MCP Gateway offers three configurable modes to solve this:
+
+| Mode | How it works | Best for |
+|------|-------------|----------|
+| **LIST** | Returns all tool definitions directly | Small catalogs (under 20-30 tools) |
+| **SEARCH+EXECUTE** | Returns two meta-tools: `SEARCH_TOOLS` and `EXECUTE_TOOL`. The agent searches by intent, gets back the top-K matches with names and schemas, then executes the best match. | Large catalogs (50+ tools). [Benchmarks show 100-160x token reduction](https://www.speakeasy.com/blog/100x-token-reduction-dynamic-toolsets). |
+| **AUTO** | Switches between LIST and SEARCH+EXECUTE dynamically based on a configurable tool count threshold | Mixed deployments where tool counts vary |
+
+In SEARCH+EXECUTE mode, the gateway uses pgvector-powered semantic search to match the agent's intent against tool names, descriptions, and parameter schemas. The administrator configures how many results (top-K) the search returns, balancing accuracy against token cost.
+
+This is the same pattern Anthropic built into their [Tool Search Tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool) — but MCP Gateway applies it at the infrastructure level, so every connected agent benefits automatically.
+
 ### Tool Routing
 
-When an agent calls a tool, the gateway resolves which server owns that tool and routes the request through the appropriate adapter. In SEARCH_EXECUTE mode, the agent first searches for tools by keyword, then executes a specific tool by name — the gateway handles the routing transparently.
+When an agent calls a tool, the gateway resolves which server owns that tool and routes the request through the appropriate adapter. In SEARCH+EXECUTE mode, the agent first searches for tools by keyword, then executes a specific tool by name — the gateway handles the routing transparently.
 
 ### Connection Pooling
 
@@ -63,19 +79,70 @@ For remote servers, the gateway maintains HTTP/2 connection pools with configura
 
 The gateway tracks sessions using the `Mcp-Session-Id` header (per the MCP specification). Each session records which servers were accessed and maintains per-server external session state, enabling stateful conversations where agents maintain context across multiple tool calls.
 
+## Credential Management
+
+Most MCP servers require authentication — OAuth tokens for GitHub, Google, Slack, Microsoft 365, or API keys for internal services. In a typical setup, tokens expire and require a human to re-authenticate, which defeats the purpose of autonomous agents.
+
+MCP Gateway solves this with **automatic background token refresh**:
+
+### How It Works
+
+1. A user authenticates once with an OAuth provider (GitHub, Google, Microsoft Entra, Okta, Slack, etc.)
+2. The gateway stores the encrypted access and refresh tokens in a per-user token vault (AES-256-GCM encryption with unique IVs)
+3. A background daemon runs every 60 seconds, checking which tokens are due for refresh
+4. Tokens are refreshed 5 minutes before expiry, with random jitter to prevent thundering herd on provider endpoints
+5. Even if a provider doesn't return expiry information, tokens are refreshed at least every 24 hours (safety net against silent revocation)
+
+### Intelligent Error Handling
+
+The refresh service distinguishes between recoverable and unrecoverable failures:
+
+- **Recoverable** (network timeout, rate limit) — retries with exponential backoff, respects `Retry-After` headers
+- **Unrecoverable** (`invalid_grant`, `access_denied`, token revoked) — immediately invalidates the connection and flags it for user attention
+
+Connections auto-invalidate after 3 unrecoverable or 10 consecutive recoverable failures, preventing credential debt from accumulating silently.
+
+### Per-User Isolation
+
+Each user maintains isolated OAuth connections to each server. This means:
+
+- User A's GitHub token is separate from User B's GitHub token
+- Token refresh happens independently per user
+- Revoking one user's access doesn't affect others
+- The audit trail shows exactly which user's credentials were used for each tool call
+
+### Credential Health Dashboard
+
+The gateway provides real-time credential health monitoring:
+
+| Status | Meaning |
+|--------|---------|
+| **Healthy** | Token valid, not near expiry |
+| **Auto-refresh active** | Expiring soon, but refresh is scheduled and working |
+| **Warning** | Less than 24 hours until expiry |
+| **Critical** | Less than 1 hour until expiry |
+| **Expired** | Token expired or connection revoked — needs re-authentication |
+
+## How MCP Servers Connect to Skills and Sandboxes
+
+MCP servers don't work in isolation — they form part of the complete agent runtime:
+
+- **Skills** teach agents _how_ to use the tools that MCP servers provide. A skill can reference specific tool names, define workflows that chain multiple tool calls, and provide domain context that makes tool usage more effective. Skills can be [linked to specific servers](/docs/concepts/skills) for tool validation.
+- **Sandboxes** provide the execution environment where agents can run code alongside tool calls. An agent might call a tool to fetch data from an API (MCP server), then execute a Python script to analyze it (sandbox), following a workflow defined by a skill.
+
 ## Key Features
 
 - **Six server types** covering remote, Node.js, Python, Docker, AI-generated, and bundled servers
 - **Automatic tool discovery** — the gateway connects to each server and discovers available tools
 - **Connection pooling** with HTTP/2 multiplexing and LRU eviction
 - **Stateful sessions** with per-server external session tracking
-- **Encrypted credentials** — server authentication details (API keys, OAuth tokens) are encrypted at rest with AES-256-GCM
+- **Encrypted credentials** — server authentication details encrypted at rest with AES-256-GCM
 - **Health monitoring** — server status tracking with connection validation
 - **On-demand lifecycle** — NPX and UVX servers are started only when needed and stopped when idle
 - **In-process execution** — generated servers run as direct function calls for zero-overhead tool execution
 
 ## API Reference
 
-- [List servers](/docs/api/servers) — retrieve all registered MCP servers
-- [Register a server](/docs/api/servers) — add a new MCP server to the gateway
-- [Server details](/docs/api/servers) — get configuration, tools, and status for a specific server
+- [List servers](/docs/api/mcp-servers/list_servers_api_v1_servers_get) — retrieve all registered MCP servers
+- [Register a server](/docs/api/mcp-servers/list_servers_api_v1_servers_get) — add a new MCP server to the gateway
+- [Server details](/docs/api/mcp-servers/list_servers_api_v1_servers_get) — get configuration, tools, and status for a specific server

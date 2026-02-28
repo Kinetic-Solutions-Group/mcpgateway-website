@@ -50,9 +50,9 @@ function Hero(): React.ReactNode {
         transition={{ delay: 0.2 }}
         className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground"
       >
-        Distributed tracing, Prometheus metrics, and a full audit trail. Monitor
-        every tool call, every token, every response — with secret masking built
-        in.
+        Distributed tracing, Prometheus metrics, and a full audit trail across
+        all three pillars. Monitor every tool call, sandbox execution, and skill
+        invocation — with automatic secret masking built in.
       </motion.p>
 
       <motion.div
@@ -122,7 +122,7 @@ function HowItWorks(): React.ReactNode {
           transition={{ delay: 0.1 }}
           className="mt-4 font-display text-4xl uppercase tracking-wide sm:text-5xl"
         >
-          Everything you need to monitor MCP servers
+          Full visibility across tools, skills, and sandboxes
         </motion.h2>
 
         <div className="mt-16 space-y-24">
@@ -154,7 +154,7 @@ function HowItWorks(): React.ReactNode {
           {/* Block 3: Full Audit Trail */}
           <FeatureBlock
             heading="Full Audit Trail"
-            description="Every MCP tool call is logged to PostgreSQL with full-text search. See the tool name, source server, arguments, response, latency, status, and user — with automatic secret masking for API keys, tokens, and passwords. Filter by status, source, date range, and export to CSV."
+            description="Every MCP tool call, sandbox command, and skill execution is logged to PostgreSQL with full-text search. See the operation type, source, arguments, response, latency, status, and user — with automatic secret masking for API keys, tokens, and passwords. Filter by status, source, date range, and export to CSV."
             index={2}
           >
             <ProductScreenshot
@@ -395,7 +395,7 @@ function CtaSection(): React.ReactNode {
           className="mt-6 text-lg text-muted-foreground"
         >
           Deploy MCP Gateway and get full visibility into every tool call,
-          token, and trace.
+          sandbox execution, skill invocation, and token.
         </motion.p>
 
         <motion.div

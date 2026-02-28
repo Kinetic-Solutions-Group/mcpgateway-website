@@ -137,7 +137,7 @@ function ArchitectureDiagram(): React.ReactNode {
             "Auth",
             "Route",
             "Audit",
-            "Rate Limit",
+            "Token Refresh",
             "Telemetry",
             "RBAC",
             "Playground",
@@ -251,7 +251,8 @@ function ArchitectureDiagram(): React.ReactNode {
         <div className="glass rounded-xl border border-border/40 p-4 text-left">
           <Server className="size-5 text-primary/70 mb-2" />
           <p className="text-sm font-semibold text-foreground">MCP Servers</p>
-          <div className="flex flex-wrap gap-1.5 mt-2.5">
+          <p className="text-[10px] text-muted-foreground/60 mb-2">The tools</p>
+          <div className="flex flex-wrap gap-1.5">
             {["GitHub", "Slack", "Jira", "Linear"].map((tag) => (
               <span
                 key={tag}
@@ -268,7 +269,10 @@ function ArchitectureDiagram(): React.ReactNode {
         <div className="glass rounded-xl border border-border/40 p-4 text-left">
           <BookOpen className="size-5 text-primary/70 mb-2" />
           <p className="text-sm font-semibold text-foreground">Agent Skills</p>
-          <div className="flex flex-wrap gap-1.5 mt-2.5">
+          <p className="text-[10px] text-muted-foreground/60 mb-2">
+            The knowledge
+          </p>
+          <div className="flex flex-wrap gap-1.5">
             {["bigquery", "pdf", "docx", "xlsx"].map((tag) => (
               <span
                 key={tag}
@@ -285,7 +289,10 @@ function ArchitectureDiagram(): React.ReactNode {
         <div className="glass rounded-xl border border-border/40 p-4 text-left">
           <Box className="size-5 text-primary/70 mb-2" />
           <p className="text-sm font-semibold text-foreground">Sandboxes</p>
-          <div className="flex flex-wrap gap-1.5 mt-2.5">
+          <p className="text-[10px] text-muted-foreground/60 mb-2">
+            The computer
+          </p>
+          <div className="flex flex-wrap gap-1.5">
             {["Python", "Bash", "Node.js"].map((tag) => (
               <span
                 key={tag}
@@ -344,8 +351,8 @@ export function Hero(): React.ReactNode {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl"
         >
-          Manage the MCP servers, skills, and sandboxes your AI agents need
-          &mdash; with the governance enterprises trust.
+          Every AI agent needs tools, knowledge, and a computer. MCP Gateway
+          manages all three &mdash; with the governance enterprises trust.
         </motion.p>
 
         {/* CTAs */}

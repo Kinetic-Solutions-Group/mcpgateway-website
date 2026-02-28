@@ -28,19 +28,19 @@ const pillars: Pillar[] = [
     icon: Server,
     title: "MCP Servers",
     description:
-      "Search across all connected servers by intent. One gateway URL replaces dozens of direct connections.",
+      "The tools. Connect agents to GitHub, Slack, databases, and any API through one gateway URL. OAuth tokens stay alive automatically — no human re-authentication needed.",
   },
   {
     icon: BookOpen,
     title: "Agent Skills",
     description:
-      "Generate expert workflow packages from natural language. AI builds the skill, you approve it.",
+      "The knowledge. Portable instruction packages that teach agents expert workflows — when to use each tool, how to chain them, and what to watch for.",
   },
   {
     icon: Box,
     title: "Sandboxes",
     description:
-      "Execute code in isolated containers with resource limits. Track every file change and output.",
+      "The computer. Isolated containers where agents execute code, run skill scripts, and produce artifacts. Pre-warmed for instant allocation.",
   },
 ];
 
@@ -325,10 +325,21 @@ export function ThreePillars(): React.ReactNode {
             transition={{ delay: 0.1 }}
             className="mt-4"
           >
-            One platform.
+            Tools. Knowledge. Computer.
             <br />
-            Three capabilities.
+            One platform.
           </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground"
+          >
+            Every production agent needs MCP servers to take action, skills to
+            know how, and a sandbox to run code. Manage, monitor, and generate
+            all three.
+          </motion.p>
         </div>
 
         {/* Pillar cards */}

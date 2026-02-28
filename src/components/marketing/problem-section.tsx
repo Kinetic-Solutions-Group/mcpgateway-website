@@ -85,8 +85,8 @@ export function ProblemSection(): React.ReactNode {
           >
             Every AI agent needs tools to connect to, knowledge to follow, and a
             safe place to execute code. When every developer and department
-            connects their own MCP servers with no oversight — credentials leak,
-            costs spiral, and compliance breaks.
+            spins up their own MCP servers, skills, and sandboxes with no
+            oversight — credentials leak, costs spiral, and compliance breaks.
           </motion.p>
         </div>
 

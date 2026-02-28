@@ -1,7 +1,13 @@
-import { Geist_Mono, Bebas_Neue, Inter } from "next/font/google";
+import { Geist_Mono, Bebas_Neue, Inter, Space_Grotesk } from "next/font/google";
 
 export const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
   display: "swap",
 });
