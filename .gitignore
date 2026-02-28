@@ -20,6 +20,9 @@
 # fumadocs generated
 .source/
 
+# Auto-generated API docs (regenerated from content/openapi.json)
+content/docs/api/
+
 # production
 /build
 

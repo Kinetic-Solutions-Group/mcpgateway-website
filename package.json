@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "generate:api-docs": "node scripts/generate-api-docs.mjs",
+    "predev": "pnpm generate:api-docs",
     "dev": "next dev",
+    "prebuild": "pnpm generate:api-docs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
