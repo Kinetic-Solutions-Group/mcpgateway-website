@@ -45,6 +45,14 @@ yarn-error.log*
 # claude local settings (contains per-machine permissions)
 .claude/settings.local.json
 
+# playwright MCP artifacts
+.playwright-mcp/
+
+# temp screenshots
+*.png
+!public/**/*.png
+!src/**/*.png
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
