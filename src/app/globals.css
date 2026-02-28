@@ -87,6 +87,35 @@
   --sidebar-accent-foreground: #2a2c39;
   --sidebar-border: #e2e1de;
   --sidebar-ring: #df7f69;
+
+  /* Fumadocs — map to light site palette */
+  --color-fd-background: #f6f5f2;
+  --color-fd-foreground: #2a2c39;
+  --color-fd-muted: #eeedea;
+  --color-fd-muted-foreground: #777777;
+  --color-fd-popover: #ffffff;
+  --color-fd-popover-foreground: #2a2c39;
+  --color-fd-card: #ffffff;
+  --color-fd-card-foreground: #2a2c39;
+  --color-fd-border: #e2e1de;
+  --color-fd-primary: #df7f69;
+  --color-fd-primary-foreground: #2a2c39;
+  --color-fd-secondary: #f0efec;
+  --color-fd-secondary-foreground: #2a2c39;
+  --color-fd-accent: #f3e5e1;
+  --color-fd-accent-foreground: #2a2c39;
+  --color-fd-ring: #df7f69;
+  --color-fd-overlay: hsla(0, 0%, 0%, 0.2);
+  /* Fumadocs semantic colors */
+  --color-fd-info: oklch(62.3% 0.214 259.815);
+  --color-fd-warning: oklch(76.9% 0.188 70.08);
+  --color-fd-error: oklch(63.7% 0.237 25.331);
+  --color-fd-success: oklch(72.3% 0.219 149.579);
+  --color-fd-idea: oklch(70.5% 0.209 60.849);
+  --color-fd-diff-remove: rgba(200, 10, 100, 0.12);
+  --color-fd-diff-remove-symbol: rgb(230, 10, 100);
+  --color-fd-diff-add: rgba(14, 180, 100, 0.1);
+  --color-fd-diff-add-symbol: rgb(10, 200, 100);
 }
 
 /* ========================================================================
@@ -126,6 +155,25 @@
   --sidebar-accent-foreground: oklch(0.95 0.01 90);
   --sidebar-border: oklch(1 0 0 / 12%);
   --sidebar-ring: oklch(0.72 0.15 40);
+
+  /* Fumadocs — map to dark site palette */
+  --color-fd-background: oklch(0.18 0.025 265);
+  --color-fd-foreground: oklch(0.95 0.01 90);
+  --color-fd-muted: oklch(0.28 0.02 265);
+  --color-fd-muted-foreground: oklch(0.65 0.02 90);
+  --color-fd-popover: oklch(0.22 0.025 265);
+  --color-fd-popover-foreground: oklch(0.95 0.01 90);
+  --color-fd-card: oklch(0.22 0.025 265);
+  --color-fd-card-foreground: oklch(0.95 0.01 90);
+  --color-fd-border: oklch(1 0 0 / 12%);
+  --color-fd-primary: oklch(0.72 0.15 40);
+  --color-fd-primary-foreground: oklch(0.18 0.025 265);
+  --color-fd-secondary: oklch(0.28 0.02 265);
+  --color-fd-secondary-foreground: oklch(0.95 0.01 90);
+  --color-fd-accent: oklch(0.32 0.04 40);
+  --color-fd-accent-foreground: oklch(0.95 0.01 90);
+  --color-fd-ring: oklch(0.72 0.15 40);
+  --color-fd-overlay: hsla(0, 0%, 0%, 0.2);
 }
 
 /* ========================================================================
