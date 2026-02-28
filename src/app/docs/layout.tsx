@@ -14,30 +14,19 @@ export default function Layout({
       tree={source.pageTree}
       nav={{
         title: (
-          <span className="flex items-center gap-2">
-            {/* Light mode: dark text logo */}
-            <Image
-              src="/logo-light-transparent.png"
-              alt="MCP Gateway"
-              width={120}
-              height={37}
-              className="h-8 w-auto dark:hidden"
-              unoptimized
-            />
-            {/* Dark mode: white text logo */}
-            <Image
-              src="/logo-dark.png"
-              alt="MCP Gateway"
-              width={120}
-              height={37}
-              className="hidden h-8 w-auto dark:block"
-              unoptimized
-            />
-          </span>
+          <Image
+            src="/logo-light-transparent.png"
+            alt="MCP Gateway"
+            width={200}
+            height={62}
+            className="h-9 w-auto dark:invert dark:hue-rotate-180"
+            unoptimized
+          />
         ),
         url: "/",
       }}
       sidebar={{
+        defaultOpenLevel: 1,
         footer: (
           <Link
             href="/"

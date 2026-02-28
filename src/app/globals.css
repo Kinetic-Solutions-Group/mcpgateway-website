@@ -182,9 +182,11 @@
 
 }
 
-/* Tailwind Typography — override prose colors for dark mode.
-   The .prose utility sets --tw-prose-* inline on the element, so we must
-   target .dark .prose specifically to override them. */
+/* ========================================================================
+   FUMADOCS — Premium docs styling to match marketing site
+   ======================================================================== */
+
+/* Tailwind Typography — prose dark mode colors */
 .dark .prose {
   --tw-prose-body: oklch(0.88 0.01 90);
   --tw-prose-headings: oklch(0.95 0.01 90);
@@ -202,6 +204,58 @@
   --tw-prose-pre-bg: oklch(0.15 0.02 265);
   --tw-prose-th-borders: oklch(1 0 0 / 20%);
   --tw-prose-td-borders: oklch(1 0 0 / 12%);
+}
+
+/* Docs heading anchors — remove underline, use foreground not link color */
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4 {
+  color: oklch(0.95 0.01 90);
+}
+
+.dark .prose h2 a,
+.dark .prose h3 a,
+.dark .prose h4 a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: inherit;
+}
+
+.dark .prose h2 a:hover,
+.dark .prose h3 a:hover,
+.dark .prose h4 a:hover {
+  color: oklch(0.72 0.15 40);
+}
+
+/* Docs page title — use Inter (body font), not Bebas Neue */
+#nd-docs-layout h1 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Sidebar — tighter, cleaner, branded */
+#nd-sidebar {
+  font-size: 0.875rem;
+}
+
+/* Code blocks — subtle border for definition */
+.dark .prose pre {
+  border: 1px solid oklch(1 0 0 / 8%);
+}
+
+/* Inline code — subtle coral tint */
+.dark .prose :not(pre) > code {
+  background: oklch(0.25 0.02 265);
+  border: 1px solid oklch(1 0 0 / 10%);
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.875em;
+}
+
+/* Description text under page title — readable but secondary */
+#nd-docs-layout [class*="description"] {
+  color: oklch(0.75 0.02 90);
 }
 
 /* ========================================================================
