@@ -165,7 +165,7 @@
   --color-fd-background: oklch(0.18 0.025 265);
   --color-fd-foreground: oklch(0.95 0.01 90);
   --color-fd-muted: oklch(0.28 0.02 265);
-  --color-fd-muted-foreground: oklch(0.65 0.02 90);
+  --color-fd-muted-foreground: oklch(0.75 0.02 90);
   --color-fd-popover: oklch(0.22 0.025 265);
   --color-fd-popover-foreground: oklch(0.95 0.01 90);
   --color-fd-card: oklch(0.22 0.025 265);
@@ -179,6 +179,29 @@
   --color-fd-accent-foreground: oklch(0.95 0.01 90);
   --color-fd-ring: oklch(0.72 0.15 40);
   --color-fd-overlay: hsla(0, 0%, 0%, 0.2);
+
+}
+
+/* Tailwind Typography — override prose colors for dark mode.
+   The .prose utility sets --tw-prose-* inline on the element, so we must
+   target .dark .prose specifically to override them. */
+.dark .prose {
+  --tw-prose-body: oklch(0.88 0.01 90);
+  --tw-prose-headings: oklch(0.95 0.01 90);
+  --tw-prose-lead: oklch(0.8 0.01 90);
+  --tw-prose-links: oklch(0.72 0.15 40);
+  --tw-prose-bold: oklch(0.95 0.01 90);
+  --tw-prose-counters: oklch(0.75 0.02 90);
+  --tw-prose-bullets: oklch(0.6 0.02 90);
+  --tw-prose-hr: oklch(1 0 0 / 12%);
+  --tw-prose-quotes: oklch(0.88 0.01 90);
+  --tw-prose-quote-borders: oklch(0.72 0.15 40);
+  --tw-prose-captions: oklch(0.75 0.02 90);
+  --tw-prose-code: oklch(0.92 0.01 90);
+  --tw-prose-pre-code: oklch(0.88 0.01 90);
+  --tw-prose-pre-bg: oklch(0.15 0.02 265);
+  --tw-prose-th-borders: oklch(1 0 0 / 20%);
+  --tw-prose-td-borders: oklch(1 0 0 / 12%);
 }
 
 /* ========================================================================
