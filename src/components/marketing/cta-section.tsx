@@ -51,8 +51,8 @@ export function CtaSection(): React.ReactNode {
           transition={{ delay: 0.1 }}
           className="mt-6 text-lg text-muted-foreground"
         >
-          Stop Shadow AI before it starts. One platform for every MCP server,
-          skill, and sandbox in your organization.
+          Give your agents the tools, knowledge, and compute they need — with
+          the governance your enterprise requires.
         </motion.p>
 
         {/* CTA buttons */}

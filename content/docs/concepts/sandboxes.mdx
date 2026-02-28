@@ -1,0 +1,109 @@
+---
+title: Sandboxes
+description: The computer — isolated container environments where agents execute code, run skill scripts, and produce artifacts.
+---
+
+## Overview
+
+MCP servers give agents **tools** (the actions). Skills give agents **knowledge** (how to use those tools). Sandboxes give agents a **computer** — a safe, isolated environment to execute code, install packages, and produce file artifacts.
+
+This is the third pillar of MCP Gateway, and it completes the agent runtime. In the [Agent + Skills + Computer](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) model, the sandbox is the agent's virtual machine — it has Bash, Python, Node.js, a persistent filesystem where skill directories live, and resource limits that prevent runaway execution.
+
+### Why Agents Need a Computer
+
+Agents need to run code, but:
+
+- Arbitrary code execution on the host is a **security risk**
+- Agents lose context between tool calls without **persistent filesystems**
+- Cold-starting a container per request is **too slow** (5-30 seconds)
+- Multiple agents for the same user should **not create duplicate environments**
+
+Sandboxes solve all four problems: container isolation, persistent volumes, warm pool prewarming, and session affinity.
+
+## How Sandboxes Work
+
+### Lifecycle
+
+Every sandbox follows a state machine:
+
+1. **Creating** — container is being provisioned with the requested image, resource limits, and volume
+2. **Running** — sandbox is active and ready for command execution, file operations, and package installation
+3. **Stopped** — sandbox is idle (auto-stopped after the configurable idle timeout). The persistent volume is preserved.
+4. **Destroyed** — sandbox is permanently deleted after exceeding the stopped retention period. The volume is removed.
+
+The transitions are managed automatically by a background lifecycle manager — no manual intervention needed.
+
+### Three Providers
+
+MCP Gateway supports three sandbox providers, selected at deployment time:
+
+**Docker (development)** — uses `aiodocker` for async Docker operations. Each sandbox gets a container and a named volume. Supports warm pools via the DockerWarmPool service.
+
+**Kubernetes (production fallback)** — uses the Kubernetes async client to create Pods and PersistentVolumeClaims directly. Every create is a cold start (no warm pool).
+
+**Agent Sandbox CRDs (production preferred)** — uses [kubernetes-sigs/agent-sandbox](https://github.com/kubernetes-sigs/agent-sandbox) CRDs for production-grade warm pool management. A `SandboxTemplate` defines the container spec, a `SandboxWarmPool` maintains N idle replicas, and a `SandboxClaim` atomically allocates from the pool for sub-second provisioning.
+
+### Warm Pools
+
+Warm pools pre-create containers so that when an agent requests a sandbox, one is allocated instantly instead of waiting 5-30 seconds for a cold start. The pool continuously replenishes to maintain the target count of idle containers.
+
+In development (Docker), the `DockerWarmPool` service manages a pool of pre-created containers. In production (Agent Sandbox), the Kubernetes CRD controller handles pool management natively.
+
+### Session Affinity
+
+When a sandbox is requested with a session key, the gateway first checks if an existing sandbox is already assigned to that session. If so, the same sandbox is returned — preventing duplicate environments for the same user or conversation. This is critical for the playground experience where agents interact with the same workspace across multiple turns.
+
+### How Sandboxes Connect to Skills
+
+Skill directories and their bundled resources live in the sandbox filesystem:
+
+```
+/workspace/
+  skills/
+    bigquery/
+      SKILL.md
+      datasources.md
+      rules.md
+    pdf/
+      SKILL.md
+      forms.md
+      reference.md
+      scripts/
+        extract_fields.py    # Runs inside the sandbox
+  outputs/
+    chart.png                # Agent-generated artifacts
+```
+
+When a skill's instructions reference a bundled script (`extract_fields.py`), the agent executes it inside the sandbox via a tool call. The script code never enters the agent's context window — only the output does. This is how progressive disclosure works at the execution level.
+
+### File Operations
+
+Sandboxes support full filesystem operations through the API:
+
+- **Upload files** — push data files, scripts, or configurations into the sandbox
+- **Download files** — retrieve agent-generated artifacts (charts, reports, processed data)
+- **List files** — browse the sandbox filesystem
+- **Execute commands** — run shell commands with configurable timeouts
+
+All file paths are validated to prevent path traversal attacks.
+
+## Key Features
+
+- **Container isolation** — each sandbox runs in its own container with CPU, memory, and disk limits
+- **Persistent volumes** — Docker volumes (dev) or Kubernetes PVCs (prod) survive stop/resume cycles
+- **Warm pools** — pre-created containers for sub-second allocation instead of 5-30 second cold starts
+- **Session affinity** — same session key reuses the same sandbox, preventing duplicates
+- **Network isolation** — network is disabled by default; can be enabled per sandbox
+- **Automatic lifecycle** — idle sandboxes are stopped automatically, stopped sandboxes are destroyed after retention period
+- **Custom images** — admin-managed sandbox images with pre-installed packages (Python, Node, multi-lang)
+- **Quota enforcement** — per-user limits on concurrent sandboxes and resource consumption
+- **Three providers** — Docker for development, Kubernetes and Agent Sandbox CRDs for production
+- **Background management** — lifecycle manager handles auto-stop, archive, destroy, and warm pool replenishment
+
+## API Reference
+
+- [List sandboxes](/docs/api/sandboxes) — retrieve all sandboxes for the current user
+- [Create a sandbox](/docs/api/sandboxes) — provision a new sandbox with a specific image and resource limits
+- [Execute command](/docs/api/sandboxes) — run a shell command in a sandbox
+- [File operations](/docs/api/sandboxes) — upload, download, and list files in a sandbox
+- [Stop / Resume](/docs/api/sandboxes) — pause and resume sandbox containers

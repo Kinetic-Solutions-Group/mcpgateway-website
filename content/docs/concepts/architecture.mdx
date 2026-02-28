@@ -1,0 +1,126 @@
+---
+title: Architecture
+description: High-level overview of MCP Gateway's system architecture — three pillars that give agents tools, knowledge, and a computer.
+---
+
+## Overview
+
+A production AI agent needs three things: **tools** to take actions, **skills** to know how to use those tools, and a **computer** to execute code and produce artifacts. MCP Gateway is the platform that provides all three.
+
+```
+┌───────────────────────────────────────────────────────────────────────────┐
+│                         YOUR AI AGENTS                                     │
+│          (Claude, GPT, Gemini, Custom Agents, Agent Studios)               │
+└────────────────────────────┬──────────────────────────────────────────────┘
+                             │  ONE URL + API Key
+                             ▼
+┌───────────────────────────────────────────────────────────────────────────┐
+│                          MCP GATEWAY                                       │
+│                                                                            │
+│   ┌─────────────────┐  ┌─────────────────┐  ┌──────────────────────────┐ │
+│   │  MCP SERVERS    │  │  AGENT SKILLS   │  │  SANDBOXES               │ │
+│   │  = Tools        │  │  = Knowledge    │  │  = Computer              │ │
+│   │                 │  │                 │  │                          │ │
+│   │  The actions.   │  │  How to use     │  │  Where code runs         │ │
+│   │  Connect to     │  │  those tools    │  │  and files live.         │ │
+│   │  any API.       │  │  effectively.   │  │                          │ │
+│   └─────────────────┘  └─────────────────┘  └──────────────────────────┘ │
+│                                                                            │
+└───────────────────────────────────────────────────────────────────────────┘
+```
+
+This model mirrors the [Agent + Skills + Computer](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) architecture: MCP servers provide tools (the API connections and actions), skills teach agents how to use those tools (workflows, best practices, domain expertise), and sandboxes provide the agent's virtual machine (isolated code execution with a persistent filesystem).
+
+MCP connections give agents access to tools. Skills teach agents how to use those tools effectively. You can use both together: MCP connections for external access, skills for implementation guidance. MCP Gateway manages all three in one place.
+
+## The Three Pillars
+
+Each pillar follows the same **Manage → Monitor → Generate** pattern. You can manage resources manually, monitor their usage through observability, and generate new ones with AI.
+
+### MCP Servers — The Tools
+
+MCP servers are how agents take action. Each server exposes tools (functions) that connect to external systems — GitHub, Slack, databases, internal APIs, cloud services. Instead of configuring each agent to connect to each server individually, you register servers with the gateway once and agents access all tools through a single URL.
+
+- **Manage** — register servers from npm (`npx`), PyPI (`uvx`), Docker Hub, remote URLs, or curated bundles. Six server types cover every deployment scenario.
+- **Monitor** — track tool calls, latency, errors, and token usage per server. Connection pooling with HTTP/2 multiplexing and health monitoring built in.
+- **Generate** — paste an API documentation URL and AI creates a working FastMCP server loaded in-process. Human reviews the generated tools before deployment.
+
+### Agent Skills — The Knowledge
+
+MCP servers expose tools with basic descriptions, but agents often lack the context to use them well. They don't know _when_ to use each tool, how tools should be _combined_ into workflows, or what best practices and edge cases to watch for. Skills fill this gap.
+
+Skills are portable instruction packages following the [agentskills.io](https://agentskills.io) specification. Think of them as "recipes" — a PR review skill knows to fetch the diff, analyze changes, and post comments in the right order. Skills use progressive disclosure: metadata (~100 tokens) loads at startup, full instructions (under 5K tokens) load only when triggered, and bundled scripts and assets are accessed on demand.
+
+- **Manage** — create skills manually, upload `.skill` packages, or import from GitHub catalogs and the skills.sh marketplace. Link skills to specific MCP servers for tool validation.
+- **Monitor** — track which skills are used, portal download counts, and validate skill instructions against actual server tool catalogs.
+- **Generate** — describe what you want in plain text ("Create a skill that reviews GitHub PRs") and a deep agent generates a complete skill package with instructions, examples, and error handling. Real-time progress streaming via SSE.
+
+### Sandboxes — The Computer
+
+Agents need a place to run code, but arbitrary execution on the host is a security risk. Sandboxes are persistent, isolated container environments — the agent's virtual machine. Each sandbox has a persistent filesystem that survives stop/resume cycles, letting agents maintain workspaces across conversations.
+
+Skill directories and their scripts live in the sandbox's filesystem. When an agent needs to execute a skill's bundled code (a Python script, a validation tool), it runs inside the sandbox with full isolation.
+
+- **Manage** — create sandbox images with pre-installed packages (Python, Node, multi-lang). Per-user quotas, session affinity, and automatic idle cleanup. Three providers: Docker (dev), Kubernetes, and Agent Sandbox CRDs (production).
+- **Monitor** — track command execution, file operations, and resource usage (CPU, memory, disk). Full audit trail with secret masking. Admin fleet management with bulk operations.
+- **Generate** — build custom sandbox images from templates or package lists. AI-generated Dockerfiles with security hardening (read-only rootfs, non-root user, capability dropping).
+
+### How the Pillars Connect
+
+The three pillars are not independent — they form a complete agent runtime:
+
+1. An agent connects to MCP Gateway and discovers **tools** from registered MCP servers
+2. The gateway loads relevant **skills** that teach the agent how to use those tools in expert workflows
+3. When the agent needs to run code (a skill's bundled script, data analysis, file generation), it executes inside a **sandbox** with persistent storage
+
+This is the same pattern behind Anthropic's Agent Skills architecture: the agent configuration (prompt + skills + MCP servers) drives execution in the agent's virtual machine (sandbox).
+
+## How It Works
+
+At the highest level, MCP Gateway sits in the middle of the AI tool-use flow:
+
+1. **AI agents** (Claude, GPT-4, Cursor, VS Code, custom agents) connect to the gateway via a single MCP endpoint
+2. **The gateway** aggregates tools from all registered MCP servers, authenticates requests, routes tool calls, manages skills and sandboxes, and records audit logs
+3. **MCP servers** execute tools and return results through the gateway back to the agent
+
+The gateway exposes three **interface modes** for progressive tool loading — a critical [context engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) concern. Loading 150 tool definitions into an agent's context burns 55,000+ tokens and [degrades accuracy past 30-50 tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool). The modes let administrators control this:
+
+- **LIST mode** returns all tool definitions directly — ideal when the total tool count fits the agent's context window (under 30 tools)
+- **SEARCH+EXECUTE mode** returns two meta-tools (`SEARCH_TOOLS` and `EXECUTE_TOOL`) that let the agent discover and invoke tools on demand via semantic search — [100-160x token reduction](https://www.speakeasy.com/blog/100x-token-reduction-dynamic-toolsets) for large catalogs
+- **AUTO mode** switches between LIST and SEARCH+EXECUTE automatically based on a configurable tool count threshold
+
+## Layered Architecture
+
+Internally, the gateway uses a **layered architecture** that applies uniformly across all three pillars:
+
+- **API layer** — FastAPI routes for REST endpoints and the MCP protocol handler
+- **Service layer** — business logic for servers, skills, sandboxes, sessions, and observability
+- **Repository layer** — database operations with SQLAlchemy 2.0
+- **Runtime adapter layer** — adapter pattern that normalizes different server types (remote, package, Docker, generated, bundle) and sandbox providers (Docker, Kubernetes, Agent Sandbox) behind unified interfaces
+- **Data layer** — PostgreSQL for persistent state, optional Redis for caching
+
+## Observability
+
+Every operation across all three pillars passes through a consistent observability pipeline. This is not a pillar — it is the fabric that connects them, providing visibility into how agents use tools, skills, and sandboxes in production.
+
+- **Distributed tracing** — OpenTelemetry auto-instruments FastAPI, SQLAlchemy, HTTPX, and Python logging. Custom spans for MCP tool calls with `mcp.server`, `mcp.tool`, and `mcp.status` attributes.
+- **Prometheus metrics** — HTTP request counts and latency, tool call counts and latency, server status, token usage, sandbox resource consumption, and Python process metrics.
+- **Audit logging** — every tool call logged to PostgreSQL with automatic secret masking and configurable retention. Full audit trail for compliance.
+
+Eight telemetry providers supported out of the box (Datadog, Azure, AWS, Google Cloud, Grafana, New Relic, Splunk, custom OTLP), with hot-reload configuration — change providers without restarting. See [Observability](/docs/concepts/observability) for the full architecture.
+
+## Key Design Decisions
+
+- **API-first, AI-first** — users describe what they want and agents build it. From generating MCP servers from API documentation to creating skill packages from plain-text intents to building sandbox images from templates.
+- **Unified gateway endpoint** — agents connect to one URL and access tools from all registered servers. No per-agent configuration.
+- **Dual authentication** — OAuth for the web UI (GitHub, Google, Microsoft Entra, Okta) and API keys for programmatic access, both resolving to the same user identity with role-based access control.
+- **Session management** — stateful conversations with per-server external session tracking via `Mcp-Session-Id` headers.
+- **Kubernetes-native** — Helm chart deployment with PVCs, CRDs for sandbox warm pools, and horizontal scaling. Docker Compose for development.
+
+## API Reference
+
+- [Servers API](/docs/api/mcp-servers/list_servers_api_v1_servers_get) — register, list, and manage MCP servers
+- [Skills API](/docs/api/skills/list_skills_api_v1_skills_get) — create, import, generate, and manage skill packages
+- [Sandboxes API](/docs/api/sandboxes) — provision and manage isolated execution environments
+- [Tools API](/docs/api/tools/tools_search_api_v1_tools_search_post) — search and execute tools across all servers
+- [Authentication API](/docs/api/authentication/get_current_user_api_v1_auth_me_get) — OAuth flows and API key management

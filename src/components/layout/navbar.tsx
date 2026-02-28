@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/skills", label: "Skills" },
   { href: "/sandboxes", label: "Sandboxes" },
   { href: "/observability", label: "Observability" },
+  { href: "/docs", label: "Docs" },
   { href: "/#deploy", label: "Deploy" },
   { href: "/blog", label: "Blog" },
 ] as const;

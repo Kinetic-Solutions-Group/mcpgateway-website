@@ -1,0 +1,31 @@
+---
+title: Authentication
+description: How to authenticate with the MCP Gateway API using API keys or OAuth.
+---
+
+All API requests to MCP Gateway require authentication. Pass a Bearer token in the `Authorization` header with every request.
+
+## API Keys
+
+API keys follow a prefixed format so you can identify their purpose at a glance:
+
+- `mgw_usr_live_*` — production keys
+- `mgw_usr_test_*` — test mode keys
+
+Include the key in the `Authorization` header:
+
+```bash
+curl http://localhost:8000/api/v1/servers \
+  -H "Authorization: Bearer mgw_usr_live_abc123..."
+```
+
+## Creating API Keys
+
+1. Open the MCP Gateway web UI at [http://localhost:3000](http://localhost:3000).
+2. Navigate to **Settings > API Keys**.
+3. Click **Create** and give the key a descriptive name.
+4. Copy the key immediately — it is only shown once.
+
+## OAuth Apps
+
+MCP Gateway supports OAuth 2.0 for third-party integrations that need to act on behalf of users. See the [Authentication architecture docs](/docs/concepts/authentication) for the full OAuth flow, scopes, and token lifecycle.

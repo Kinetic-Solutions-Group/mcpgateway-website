@@ -1,0 +1,44 @@
+---
+title: Quickstart
+description: Get MCP Gateway running and make your first API call in under 5 minutes.
+---
+
+## Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed
+- A terminal with `curl` (or any HTTP client)
+
+## 1. Start MCP Gateway
+
+```bash
+git clone https://github.com/Kinetic-Solutions-Group/mcpgateway.git
+cd mcpgateway
+docker compose up -d
+```
+
+The gateway API is now running at `http://localhost:8000` and the web UI at `http://localhost:3000`.
+
+## 2. Create an API Key
+
+Open the web UI at [http://localhost:3000](http://localhost:3000) and navigate to **Settings > API Keys**. Create a new key and copy it — you will need it for every API request.
+
+## 3. Make Your First Request
+
+List the registered MCP servers:
+
+```bash
+curl http://localhost:8000/api/v1/servers \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+You should receive an empty list (`[]`), which means the gateway is running and authenticated. You are ready to register your first MCP server.
+
+## Next Steps
+
+MCP Gateway manages three pillars for your AI agents:
+
+- **[MCP Servers](/docs/concepts/mcp-servers)** — The tools. Register servers to connect agents to GitHub, Slack, databases, and any API.
+- **[Agent Skills](/docs/concepts/skills)** — The knowledge. Create or import instruction packages that teach agents expert workflows.
+- **[Sandboxes](/docs/concepts/sandboxes)** — The computer. Provision isolated containers where agents execute code and produce artifacts.
+
+Start by [registering an MCP server](/docs/concepts/mcp-servers), then explore the full [architecture overview](/docs/concepts/architecture) to see how the three pillars connect.

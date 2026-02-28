@@ -1,0 +1,118 @@
+---
+title: Agent Skills
+description: The knowledge layer — portable instruction packages that teach AI agents expert workflows for using MCP tools.
+---
+
+## Overview
+
+MCP servers give agents **tools** (the actions). Skills give agents **knowledge** (how to use those tools effectively).
+
+MCP servers expose tools with basic descriptions, but agents often lack the context to use them well. They don't know _when_ to use each tool, how tools should be _combined_ into multi-step workflows, or what best practices and edge cases to watch for. Skills fill this gap — they are the second pillar of MCP Gateway.
+
+Agent Skills are portable instruction packages following the [agentskills.io](https://agentskills.io) open specification. Think of them as "recipes" that turn a generic tool catalog into guided, reliable automation. A PR review skill knows to fetch the diff, analyze changes for security vulnerabilities, and post structured comments in the right order. A data analysis skill knows to load the CSV, clean nulls, run aggregations, and generate charts — without the agent figuring it out from scratch each time.
+
+This is the same concept behind [Anthropic's Agent Skills architecture](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview): skills live in the agent's filesystem, load progressively to save tokens, and bridge the gap between raw tool access and expert-level automation.
+
+Like all three pillars, skills follow the **Manage → Monitor → Generate** pattern.
+
+## How Skills Work
+
+### Progressive Disclosure
+
+Skills are designed for efficient token usage — the same progressive loading model used by Anthropic's Claude:
+
+| Layer | Size | When Loaded | Purpose |
+|-------|------|-------------|---------|
+| **Metadata** | ~100 tokens | Always (at startup) | YAML frontmatter for filtering and discovery |
+| **Instructions** | under 5K tokens | When triggered | Full SKILL.md with step-by-step workflows |
+| **Resources** | On-demand | As needed | Scripts, reference docs, assets — loaded only when referenced |
+
+This ensures agents get relevant context without overwhelming their context window. An agent can have dozens of skills installed with near-zero token cost — only the triggered skill's instructions enter the context.
+
+### Skill Structure
+
+A skill package is a ZIP file with a `SKILL.md` at its root:
+
+```
+my-skill.skill/
+  SKILL.md           # Required — YAML frontmatter + markdown instructions
+  scripts/           # Optional — executable helper scripts
+  references/        # Optional — external documentation, API specs
+  assets/            # Optional — templates, example data
+```
+
+The `SKILL.md` uses YAML frontmatter for metadata (name, description, author, version, tags, allowed tools) followed by markdown content with step-by-step instructions. This format ensures skills are portable across any system that supports the agentskills.io spec.
+
+### Where Skills Run
+
+Skill instructions guide the agent's reasoning. But when a skill includes bundled scripts (a `validate.py`, a `fill_form.py`), those scripts execute inside a **sandbox** — the third pillar. The skill's directory and files live in the sandbox's persistent filesystem. This is how the three pillars connect:
+
+- **MCP servers** provide the tools (API connections)
+- **Skills** provide the knowledge (how to orchestrate those tools)
+- **Sandboxes** provide the computer (where skill scripts execute)
+
+## Three Entry Paths
+
+### Import from Catalog
+
+Browse and import skills from external catalogs like GitHub repositories or the skills.sh marketplace. The gateway fetches the skill package, validates it against the agentskills.io specification, and stores it locally.
+
+```bash
+curl -X POST /api/v1/skills/import \
+  -d '{"source": "anthropics", "skill_name": "pr-reviewer"}'
+```
+
+### AI Generation
+
+The most powerful entry path. Describe what you want in plain text and a deep agent creates a complete skill package. The agent operates in a sandboxed workspace with path-validated file operations and streams real-time progress events via SSE.
+
+```bash
+curl -X POST /api/v1/skills/generate \
+  -d '{"intent": "Review PRs for security vulnerabilities"}'
+  # → SSE stream: planning → thinking → file_created → complete
+```
+
+The generation agent is guided by a comprehensive system prompt and uses workspace tools (`init_skill`, `write_file`, `read_file`, `package_skill`) to build the skill iteratively. The system prompt can be customized per deployment via the prompt override system.
+
+### Manual Upload
+
+Upload `.zip`, `.skill`, or `.md` files directly. The gateway validates the package structure, checks that frontmatter follows the specification, and stores the skill.
+
+## Server Linking
+
+Skills can be linked to specific MCP servers they are designed for. When linked, the skill's tool references can be validated against the server's actual tool catalog, and the web UI shows the association for easier discovery. This bridges the first pillar (tools) with the second (knowledge).
+
+## Portal Publishing
+
+Skills can be published to the customer portal with categories, tags, and download tracking for team discovery. Admins curate which skills team members see, making it easy to share best practices and expert workflows across the organization.
+
+## Validation and Security
+
+Every skill is validated against the agentskills.io specification before storage:
+
+- Name must be lowercase-hyphenated (max 64 characters)
+- Description must not exceed 1024 characters
+- YAML frontmatter must include required fields
+- ZIP packages must contain `SKILL.md` at the root or in a single subdirectory
+- Package size limit: 10MB maximum with a 100-file cap
+- AI generation workspace uses path traversal prevention, YAML safe loading, and filename sanitization
+
+## Key Features
+
+- **Open standard** — follows agentskills.io for cross-platform portability
+- **Three entry paths** — import from catalogs, generate with AI, or upload manually
+- **AI-powered generation** — deep agent pattern with SSE streaming, sandboxed workspace, and customizable system prompts
+- **Progressive disclosure** — metadata loads at startup (~100 tokens), full instructions only when triggered
+- **Catalog integration** — GitHub repositories and skills.sh marketplace
+- **Starter templates** — pre-built templates for API integration, data analysis, workflow automation, and code generation
+- **Portal publishing** — categories, tags, and download tracking for team discovery
+- **Server linking** — associate skills with specific MCP servers for tool validation
+
+## API Reference
+
+- [List skills](/docs/api/skills/list_skills_api_v1_skills_get) — retrieve all skills with pagination and filtering
+- [Create a skill](/docs/api/skills/list_skills_api_v1_skills_get) — create a skill from generated content
+- [Upload a skill](/docs/api/skills/list_skills_api_v1_skills_get) — upload a `.zip`, `.skill`, or `.md` file
+- [Generate a skill](/docs/api/skills/list_skills_api_v1_skills_get) — AI-generate a skill from a plain-text intent (SSE streaming)
+- [Browse catalogs](/docs/api/skills/list_skills_api_v1_skills_get) — list available skills from external catalogs
+- [Import from catalog](/docs/api/skills/list_skills_api_v1_skills_get) — import a skill from GitHub or skills.sh

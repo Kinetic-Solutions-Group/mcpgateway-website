@@ -17,6 +17,12 @@
 /.next/
 /out/
 
+# fumadocs generated
+.source/
+
+# Auto-generated API docs (regenerated from content/openapi.json)
+content/docs/api/
+
 # production
 /build
 
@@ -38,6 +44,14 @@ yarn-error.log*
 
 # claude local settings (contains per-machine permissions)
 .claude/settings.local.json
+
+# playwright MCP artifacts
+.playwright-mcp/
+
+# temp screenshots
+*.png
+!public/**/*.png
+!src/**/*.png
 
 # typescript
 *.tsbuildinfo

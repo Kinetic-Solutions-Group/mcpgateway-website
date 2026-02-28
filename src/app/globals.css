@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+@import "fumadocs-openapi/css/preset.css";
+
+@source '../node_modules/fumadocs-ui/dist/**/*.js';
 
 @plugin "@tailwindcss/typography";
 
@@ -12,6 +17,8 @@
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-display);
+  --font-space-grotesk: var(--font-space-grotesk);
+  --font-geist-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -87,6 +94,35 @@
   --sidebar-accent-foreground: #2a2c39;
   --sidebar-border: #e2e1de;
   --sidebar-ring: #df7f69;
+
+  /* Fumadocs — map to light site palette */
+  --color-fd-background: #f6f5f2;
+  --color-fd-foreground: #2a2c39;
+  --color-fd-muted: #eeedea;
+  --color-fd-muted-foreground: #777777;
+  --color-fd-popover: #ffffff;
+  --color-fd-popover-foreground: #2a2c39;
+  --color-fd-card: #ffffff;
+  --color-fd-card-foreground: #2a2c39;
+  --color-fd-border: #e2e1de;
+  --color-fd-primary: #df7f69;
+  --color-fd-primary-foreground: #2a2c39;
+  --color-fd-secondary: #f0efec;
+  --color-fd-secondary-foreground: #2a2c39;
+  --color-fd-accent: #f3e5e1;
+  --color-fd-accent-foreground: #2a2c39;
+  --color-fd-ring: #df7f69;
+  --color-fd-overlay: hsla(0, 0%, 0%, 0.2);
+  /* Fumadocs semantic colors */
+  --color-fd-info: oklch(62.3% 0.214 259.815);
+  --color-fd-warning: oklch(76.9% 0.188 70.08);
+  --color-fd-error: oklch(63.7% 0.237 25.331);
+  --color-fd-success: oklch(72.3% 0.219 149.579);
+  --color-fd-idea: oklch(70.5% 0.209 60.849);
+  --color-fd-diff-remove: rgba(200, 10, 100, 0.12);
+  --color-fd-diff-remove-symbol: rgb(230, 10, 100);
+  --color-fd-diff-add: rgba(14, 180, 100, 0.1);
+  --color-fd-diff-add-symbol: rgb(10, 200, 100);
 }
 
 /* ========================================================================
@@ -126,6 +162,194 @@
   --sidebar-accent-foreground: oklch(0.95 0.01 90);
   --sidebar-border: oklch(1 0 0 / 12%);
   --sidebar-ring: oklch(0.72 0.15 40);
+
+  /* Fumadocs — map to dark site palette */
+  --color-fd-background: oklch(0.18 0.025 265);
+  --color-fd-foreground: oklch(0.95 0.01 90);
+  --color-fd-muted: oklch(0.28 0.02 265);
+  --color-fd-muted-foreground: oklch(0.75 0.02 90);
+  --color-fd-popover: oklch(0.22 0.025 265);
+  --color-fd-popover-foreground: oklch(0.95 0.01 90);
+  --color-fd-card: oklch(0.22 0.025 265);
+  --color-fd-card-foreground: oklch(0.95 0.01 90);
+  --color-fd-border: oklch(1 0 0 / 12%);
+  --color-fd-primary: oklch(0.72 0.15 40);
+  --color-fd-primary-foreground: oklch(0.18 0.025 265);
+  --color-fd-secondary: oklch(0.28 0.02 265);
+  --color-fd-secondary-foreground: oklch(0.95 0.01 90);
+  --color-fd-accent: oklch(0.32 0.04 40);
+  --color-fd-accent-foreground: oklch(0.95 0.01 90);
+  --color-fd-ring: oklch(0.72 0.15 40);
+  --color-fd-overlay: hsla(0, 0%, 0%, 0.2);
+
+}
+
+/* ========================================================================
+   FUMADOCS — Premium docs styling to match marketing site
+   ======================================================================== */
+
+/* Tailwind Typography — prose dark mode colors */
+.dark .prose {
+  --tw-prose-body: oklch(0.88 0.01 90);
+  --tw-prose-headings: oklch(0.95 0.01 90);
+  --tw-prose-lead: oklch(0.8 0.01 90);
+  --tw-prose-links: oklch(0.72 0.15 40);
+  --tw-prose-bold: oklch(0.95 0.01 90);
+  --tw-prose-counters: oklch(0.75 0.02 90);
+  --tw-prose-bullets: oklch(0.6 0.02 90);
+  --tw-prose-hr: oklch(1 0 0 / 12%);
+  --tw-prose-quotes: oklch(0.88 0.01 90);
+  --tw-prose-quote-borders: oklch(0.72 0.15 40);
+  --tw-prose-captions: oklch(0.75 0.02 90);
+  --tw-prose-code: oklch(0.92 0.01 90);
+  --tw-prose-pre-code: oklch(0.88 0.01 90);
+  --tw-prose-pre-bg: oklch(0.15 0.02 265);
+  --tw-prose-th-borders: oklch(1 0 0 / 20%);
+  --tw-prose-td-borders: oklch(1 0 0 / 12%);
+}
+
+/* Docs heading anchors — remove underline, use foreground not link color */
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4 {
+  color: oklch(0.95 0.01 90);
+}
+
+.dark .prose h2 a,
+.dark .prose h3 a,
+.dark .prose h4 a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: inherit;
+}
+
+.dark .prose h2 a:hover,
+.dark .prose h3 a:hover,
+.dark .prose h4 a:hover {
+  color: oklch(0.72 0.15 40);
+}
+
+/* ── Docs typography: Space Grotesk body, Bebas display, Geist Mono code ── */
+
+/* Docs layout uses Space Grotesk as the primary body font */
+#nd-docs-layout {
+  font-family: var(--font-space-grotesk), var(--font-sans);
+}
+
+/* Page title — Bebas Neue display, large and commanding */
+#nd-docs-layout h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 1.5rem + 2.5vw, 3.25rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* Section headings (h2) — Space Grotesk bold, tight and sharp */
+#nd-docs-layout .prose h2 {
+  font-family: var(--font-space-grotesk), var(--font-sans);
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
+
+/* Sub-headings (h3) — Space Grotesk semibold */
+#nd-docs-layout .prose h3 {
+  font-family: var(--font-space-grotesk), var(--font-sans);
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+}
+
+/* Body text — slightly bumped for readability with Space Grotesk */
+#nd-docs-layout .prose {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  letter-spacing: -0.005em;
+}
+
+/* Sidebar — Space Grotesk, tighter */
+#nd-sidebar {
+  font-family: var(--font-space-grotesk), var(--font-sans);
+  font-size: 0.875rem;
+  letter-spacing: -0.01em;
+}
+
+/* Sidebar category labels — uppercase monospace for dev feel */
+#nd-sidebar [data-type="folder"] > button > span:first-child {
+  font-family: var(--font-geist-mono), var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Breadcrumb — monospace, small caps feel */
+#nd-docs-layout nav[aria-label="breadcrumb"],
+#nd-docs-layout [class*="breadcrumb"] {
+  font-family: var(--font-geist-mono), var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Code blocks — left accent border + subtle outline */
+.dark .prose pre {
+  border: 1px solid oklch(1 0 0 / 8%);
+  border-left: 3px solid oklch(0.72 0.15 40 / 50%);
+}
+
+/* Inline code — monospace with subtle coral background */
+.dark .prose :not(pre) > code {
+  font-family: var(--font-geist-mono), var(--font-mono);
+  background: oklch(0.25 0.03 40 / 30%);
+  border: 1px solid oklch(1 0 0 / 10%);
+  border-radius: 0.25rem;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+/* Light mode inline code */
+.prose :not(pre) > code {
+  font-family: var(--font-geist-mono), var(--font-mono);
+  background: oklch(0.95 0.02 40 / 40%);
+  border: 1px solid oklch(0 0 0 / 8%);
+  border-radius: 0.25rem;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+/* Description text — Space Grotesk, lighter weight */
+#nd-docs-layout [class*="description"] {
+  font-family: var(--font-space-grotesk), var(--font-sans);
+  color: oklch(0.75 0.02 90);
+  letter-spacing: -0.01em;
+}
+
+/* Search button — monospace keyboard shortcut feel */
+#nd-docs-layout button[class*="search"],
+#nd-sidebar button[class*="search"] {
+  font-family: var(--font-space-grotesk), var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+/* Landing page: expand prose container when it has custom components.
+   The default 65ch max-width is too narrow for card grids and renders
+   differently across browsers (ch unit is font-metric-dependent). */
+#nd-docs-layout .prose:has(> .not-prose) {
+  max-width: none;
+}
+
+/* Landing page: remove the 900px article cap so cards fill the full
+   grid column.  The 16px centering margins from mx-auto + max-w-[900px]
+   create a visible gap that renders inconsistently across browsers. */
+#nd-docs-layout article:has([data-docs-landing]) {
+  max-width: none;
 }
 
 /* ========================================================================
@@ -147,15 +371,16 @@
     @apply bg-background text-foreground;
   }
 
-  /* Fluid typography — Bebas Neue for display, Inter for body */
-  h1 {
+  /* Fluid typography — Bebas Neue for display, Inter for body
+     Scoped to marketing pages only via [data-marketing] wrapper */
+  [data-marketing] h1 {
     font-size: clamp(2rem, 1.5rem + 4vw, 5.5rem);
     line-height: 1;
     letter-spacing: 0.02em;
     text-wrap: balance;
   }
 
-  h2 {
+  [data-marketing] h2 {
     @apply font-display;
     font-size: clamp(2rem, 1.25rem + 2.5vw, 3.5rem);
     line-height: 1;
@@ -164,7 +389,7 @@
     text-wrap: balance;
   }
 
-  h3 {
+  [data-marketing] h3 {
     font-size: clamp(1.25rem, 1rem + 0.75vw, 1.5rem);
     line-height: 1.25;
     letter-spacing: -0.02em;

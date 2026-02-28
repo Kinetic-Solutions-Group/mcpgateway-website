@@ -1,0 +1,10 @@
+{
+  "title": "Concepts",
+  "pages": [
+    "architecture",
+    "mcp-servers",
+    "skills",
+    "sandboxes",
+    "observability"
+  ]
+}

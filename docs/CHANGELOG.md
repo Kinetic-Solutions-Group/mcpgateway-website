@@ -2,6 +2,39 @@
 
 All notable changes to MCPGateway.com Website will be documented in this file.
 
+## 2026-02-28 — API Documentation Site (feat-api-docs)
+
+### Added
+
+- `/docs` — Full documentation site powered by Fumadocs (Next.js-native docs framework)
+- `/docs/getting-started/quickstart` — Quickstart guide (Docker setup, first API call)
+- `/docs/getting-started/authentication` — API key and OAuth authentication guide
+- `/docs/concepts/` — 5 concept pages (Architecture, MCP Servers, Skills, Sandboxes, Observability) sourced from product architecture docs
+- `/docs/api/` — 202 auto-generated API endpoint pages across 32 tag groups, with code samples in 6 languages (cURL, JavaScript, Go, Python, Java, C#)
+- `/docs/api/reference` — Scalar interactive API reference with Try-It playground (noindex)
+- `scripts/generate-api-docs.mjs` — Prebuild script that generates MDX from `content/openapi.json` (soft-fail: warns and skips if spec missing)
+- `src/app/api/search/route.ts` — Fumadocs search API route (Cmd+K search across all docs)
+- `src/components/docs/api-page.tsx` — APIPage component using fumadocs-openapi v10 factory pattern
+- `content/openapi.json` — OpenAPI 3.1.0 spec (24K lines, copied from product repo)
+- Docs pages added to sitemap
+- "Docs" link added to marketing navbar
+
+### Changed
+
+- `src/app/layout.tsx` — Wrapped with Fumadocs `RootProvider` (owns theming via next-themes)
+- `src/components/shared/providers.tsx` — Removed `ThemeProvider` (Fumadocs RootProvider replaces it)
+- `src/app/globals.css` — Added `--color-fd-*` CSS variable overrides mapping Fumadocs to coral/navy palette
+- `next.config.ts` — Wrapped with `createMDX()` from fumadocs-mdx
+- `tsconfig.json` — Added `.source/**/*.ts` to include array
+- `eslint.config.mjs` — Added `.source/**` to global ignores (auto-generated files)
+- `package.json` — Added `predev`, `prebuild`, and `generate:api-docs` scripts
+
+### Dependencies
+
+- fumadocs-ui@16.6.7, fumadocs-core@16.6.7, fumadocs-openapi@10.3.13, fumadocs-mdx@14.2.8
+- shiki@4.0.0 (syntax highlighting for API code samples)
+- @scalar/nextjs-api-reference (interactive API reference)
+
 ## 2026-02-26 — Observability Page (feat/observability-page)
 
 ### Added
